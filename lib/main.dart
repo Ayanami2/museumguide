@@ -7,9 +7,12 @@ import 'package:museumguide/page/home_page.dart';
 import 'package:museumguide/page/map_page.dart';
 import 'package:museumguide/page/mine/mine_page.dart';
 import 'package:museumguide/page/mine/settings.dart';
+import 'package:museumguide/service/museum_basic_information_service.dart';
+import 'package:museumguide/models/index.dart';
+import 'package:museumguide/service/index.dart';
 
 
-void main() {
+void main() async{
   if(Platform.isIOS){
     BMFMapSDK.setApiKeyAndCoordType(
         '请输入百度开放平台申请的iOS端API KEY', BMF_COORD_TYPE.BD09LL);

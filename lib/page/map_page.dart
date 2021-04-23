@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:museumguide/models/index.dart';
 import 'package:museumguide/widgets/index.dart';
 import 'package:flutter_baidu_mapapi_base/flutter_baidu_mapapi_base.dart';
 import 'package:flutter_baidu_mapapi_map/flutter_baidu_mapapi_map.dart';
@@ -8,6 +9,7 @@ import 'package:flutter_baidu_mapapi_utils/flutter_baidu_mapapi_utils.dart';
 import 'package:flutter_bmflocation/bdmap_location_flutter_plugin.dart';
 import 'package:flutter_bmflocation/flutter_baidu_location.dart';
 import 'package:flutter_bmflocation/flutter_baidu_location_android_option.dart';
+import 'package:museumguide/service/index.dart';
 
 class MapPage extends StatefulWidget {
   @override
@@ -40,19 +42,19 @@ class _MapPageState extends BMFBaseMapState<MapPage> {
       myMapController?.setUserTrackingMode(_userTrackingMode);
       // updatUserLocationDisplayParam();
     }
-    BMFCoordinate bmfCoordinate=BMFCoordinate(40.258911,116.15437);
+    BMFCoordinate bmfCoordinate = BMFCoordinate(40.258911, 116.15437);
     addStartMarker(bmfCoordinate);
-    bmfCoordinate =BMFCoordinate(39.924091,116.4034147);
-    addMuseum(bmfCoordinate);
+    bmfCoordinate = BMFCoordinate(39.924091, 116.4034147);
+    // addMuseum(bmfCoordinate);
+    addMuseums();
 
-    myMapController?.setMapClickedMarkerCallback(
-        callback: (BMFMarker marker) {
-          print(marker.position.latitude);
-          print(marker.position.longitude);
-        });
+    myMapController?.setMapClickedMarkerCallback(callback: (BMFMarker marker) {
+      print(marker.position.latitude);
+      print(marker.position.longitude);
+    });
   }
 
-  StreamBuilder BaiduMap() {
+  StreamBuilder baiduMap() {
     return StreamBuilder<Map<String, Object>>(
         stream: baiduGps(),
         builder: (context, snapshot) {
@@ -92,7 +94,7 @@ class _MapPageState extends BMFBaseMapState<MapPage> {
         appBar: AppBar(
           title: Text("博物馆导览"),
         ),
-        body: BaiduMap(),
+        body: baiduMap(),
       ),
     );
   }
@@ -130,11 +132,11 @@ class _MapPageState extends BMFBaseMapState<MapPage> {
   }
 
   /// 更新位置
-  void updateUserLocation()  {
+  void updateUserLocation() {
     Stream<Map<String, Object>> stream = baiduGps();
     stream.listen((event) {
       BMFCoordinate coordinate =
-          BMFCoordinate(event["latitude"], event["longitude"]);
+      BMFCoordinate(event["latitude"], event["longitude"]);
       BMFLocation location = BMFLocation(
           coordinate: coordinate,
           altitude: 0,
@@ -217,7 +219,7 @@ class _MapPageState extends BMFBaseMapState<MapPage> {
     myMapController?.addMarker(marker);
   }
 
-  void addMuseum(BMFCoordinate bmfCoordinate){
+  void addMuseum(BMFCoordinate bmfCoordinate) {
     BMFMarker marker = BMFMarker(
         position: bmfCoordinate,
         title: 'museumLocation',
@@ -226,5 +228,21 @@ class _MapPageState extends BMFBaseMapState<MapPage> {
         icon: 'resource/icons8-museum-64.png');
     // bool result;
     myMapController?.addMarker(marker);
+  }
+
+  void addMuseums() async {
+    List<MuseumBasicInformation> l = await MuseumBasicInformationService
+        .getMuseumList();
+    for (MuseumBasicInformation obj in l) {
+      BMFMarker marker = BMFMarker(
+          position: BMFCoordinate(
+              double.parse(obj.latitude), double.parse(obj.longitude)),
+          title: obj.museumName,
+          subtitle: 'test',
+          identifier: obj.museumName,
+          icon: 'resource/icons8-museum-64.png');
+      // bool result;
+      myMapController?.addMarker(marker);
+    }
   }
 }
