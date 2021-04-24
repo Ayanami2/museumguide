@@ -7,7 +7,7 @@ import 'package:museumguide/config/bottom_lab_icon.dart';
 import 'mine/mine_page.dart';
 import 'comment_page.dart';
 import 'map_page.dart';
-
+import 'information/museum_list_page.dart';
 
 class HomePage extends StatefulWidget {
   @override
@@ -27,6 +27,7 @@ class _HomePageState extends State<HomePage> {
     super.initState();
     _pages = <Widget>[
       MapPage(),
+      MuseumListPage(),
       CommentPage(),
       MinePage(),
     ];
@@ -56,6 +57,7 @@ class _HomePageState extends State<HomePage> {
           BottomNavigationBarItem(icon: getTabIcon(0)),
           BottomNavigationBarItem(icon: getTabIcon(1)),
           BottomNavigationBarItem(icon: getTabIcon(2)),
+          BottomNavigationBarItem(icon: getTabIcon(3)),
         ],
         currentIndex: _tabIndex,
         onTap: (index) {

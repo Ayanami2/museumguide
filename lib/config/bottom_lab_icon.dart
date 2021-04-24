@@ -10,6 +10,7 @@ class BottomTabIcon {
       Icon(Icons.map),
       Icon(Icons.map_outlined),
     ],
+    [Icon(Icons.list), Icon(Icons.list_outlined)],
     [
       Icon(Icons.comment),
       Icon(Icons.comment_bank),
