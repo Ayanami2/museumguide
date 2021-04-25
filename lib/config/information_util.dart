@@ -2,6 +2,8 @@
 ///updateDate:2021/4/23
 ///updateBy:swg
 
+import 'package:flutter/material.dart';
+
 class Information {
   static List<String> museumList = [
     "爱心博物馆",
@@ -16,5 +18,12 @@ class Information {
     "通过博物馆",
     "颜色博物馆",
     "优化博物馆",
+  ];
+  static List<MaterialColor> colorList = [
+    Colors.red,
+    Colors.blue,
+    Colors.purple,
+    Colors.green,
+    Colors.yellow
   ];
 }
