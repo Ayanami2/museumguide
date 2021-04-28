@@ -13,23 +13,24 @@ import 'package:museumguide/service/index.dart';
 
 
 void main() async {
-  List<Collection> e =
-      await CollectionService.getCollectionListByMuseumID(museumID: 2);
-  for (Collection obj in e) {
-    print(obj.collectionName);
+  // List<Collection> e =
+  //     await CollectionService.getCollectionListByMuseumID(museumID: 2);
+  // for (Collection obj in e) {
+  //   print(obj.collectionName);
+  // }
+  //
+  // Collection c =
+  //     await CollectionService.getCollectionByCollectionID(collectionID: 4);
+  // print(c.collectionIntroduction);
+  if (Platform.isIOS) {
+    BMFMapSDK.setApiKeyAndCoordType(
+        '请输入百度开放平台申请的iOS端API KEY', BMF_COORD_TYPE.BD09LL);
+  } else if (Platform.isAndroid) {
+// Android 目前不支持接口设置Apikey,
+// 请在主工程的Manifest文件里设置，详细配置方法请参考[https://lbsyun.baidu.com/ 官网][https://lbsyun.baidu.com/)demo
+    BMFMapSDK.setCoordType(BMF_COORD_TYPE.BD09LL);
   }
-
-  Collection c =
-      await CollectionService.getCollectionByCollectionID(collectionID: 4);
-  print(c.collectionIntroduction);
-//   if(Platform.isIOS){
-//     BMFMapSDK.setApiKeyAndCoordType(
-//         '请输入百度开放平台申请的iOS端API KEY', BMF_COORD_TYPE.BD09LL);
-//   }else if(Platform.isAndroid){
-// // Android 目前不支持接口设置Apikey,
-// // 请在主工程的Manifest文件里设置，详细配置方法请参考[https://lbsyun.baidu.com/ 官网][https://lbsyun.baidu.com/)demo
-//     BMFMapSDK.setCoordType(BMF_COORD_TYPE.BD09LL);}
-//   runApp(MyApp());
+  runApp(MyApp());
 }
 
 class MyApp extends StatelessWidget {
