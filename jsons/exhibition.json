@@ -1,0 +1,9 @@
+{
+  "exhibitionID": 2,
+  "exhibitionName": "test",
+  "exhibitionTime": "123",
+  "exhibitionIntroduction": "456",
+  "museumID": 0,
+  "museumName": "故宫博物院",
+  "exhibitionImageLink": "test"
+}

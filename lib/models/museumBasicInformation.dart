@@ -4,7 +4,7 @@ part 'museumBasicInformation.g.dart';
 
 @JsonSerializable()
 class MuseumBasicInformation {
-  MuseumBasicInformation();
+    MuseumBasicInformation();
 
   num museumID;
   String museumName;

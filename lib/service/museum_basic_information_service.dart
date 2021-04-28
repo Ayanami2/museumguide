@@ -11,10 +11,10 @@ class MuseumBasicInformationService {
       ServerUrl.MUSEUM_BASIC_INFORMATION_URL,
       body: {
         "action": "getMuseumByMuseumID",
-        "museumID": museumID,
+        "museumID": museumID.toString(),
       },
     );
-    print(MuseumBasicInformation.fromJson(jsonDecode(response.body)).museumID);
+    // print(MuseumBasicInformation.fromJson(jsonDecode(response.body)).museumID);
     return MuseumBasicInformation.fromJson(jsonDecode(response.body));
   }
 
