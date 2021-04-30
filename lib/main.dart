@@ -12,6 +12,7 @@ import 'package:museumguide/models/index.dart';
 import 'package:museumguide/service/index.dart';
 import 'package:http/http.dart' as http;
 import 'package:museumguide/config/index.dart';
+import 'package:museumguide/page/video_select.dart';
 
 void main() async {
   // var response = await http.post(ServerUrl.BASE_URL+'/test.php');
@@ -42,6 +43,7 @@ class MyApp extends StatelessWidget {
           'map_page': (context) => (MapPage()),
           'mine_page': (context) => (MinePage()),
           'settings_page':(context) =>(SettingsPage()),
+          'video_select_page':(context) => (VideoSelectPage()),
         }
       ),
     );

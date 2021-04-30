@@ -21,6 +21,8 @@ environment:
   sdk: ">=2.7.0 <3.0.0"
 
 dependencies:
+  video_player: 0.10.2+1
+  image_picker: ^0.6.7+22
   flutter_baidu_mapapi_map: ^2.0.1
   flutter_baidu_mapapi_search: ^2.0.1
   flutter_baidu_mapapi_utils: ^2.0.1
