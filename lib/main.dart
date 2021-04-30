@@ -10,18 +10,12 @@ import 'package:museumguide/page/mine/settings.dart';
 import 'package:museumguide/service/index.dart';
 import 'package:museumguide/models/index.dart';
 import 'package:museumguide/service/index.dart';
-
+import 'package:http/http.dart' as http;
+import 'package:museumguide/config/index.dart';
 
 void main() async {
-  // List<Collection> e =
-  //     await CollectionService.getCollectionListByMuseumID(museumID: 2);
-  // for (Collection obj in e) {
-  //   print(obj.collectionName);
-  // }
-  //
-  // Collection c =
-  //     await CollectionService.getCollectionByCollectionID(collectionID: 4);
-  // print(c.collectionIntroduction);
+  // var response = await http.post(ServerUrl.BASE_URL+'/test.php');
+  // print(response.body);
   if (Platform.isIOS) {
     BMFMapSDK.setApiKeyAndCoordType(
         '请输入百度开放平台申请的iOS端API KEY', BMF_COORD_TYPE.BD09LL);

@@ -1,3 +1,5 @@
+// import 'dart:html';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:museumguide/models/index.dart';
 import 'package:museumguide/widgets/index.dart';
@@ -31,6 +33,9 @@ class _MapPageState extends BMFBaseMapState<MapPage> {
   /// 定位点样式
   BMFUserLocationDisplayParam _displayParam;
 
+  ///markerID转museumID
+  Map<String, String> maker2museum = {};
+
   void onBMFMapCreated(BMFMapController controller) {
     super.onBMFMapCreated(controller);
 
@@ -51,6 +56,15 @@ class _MapPageState extends BMFBaseMapState<MapPage> {
     myMapController?.setMapClickedMarkerCallback(callback: (BMFMarker marker) {
       print(marker.position.latitude);
       print(marker.position.longitude);
+      print(marker.Id);
+      print(marker.identifier);
+      print(marker.title);
+      showDialog(
+        context: context,
+        builder: (ctx) {
+          return museumInfoWindow(int.parse(maker2museum[marker.Id]));
+        },
+      );
     });
   }
 
@@ -77,7 +91,7 @@ class _MapPageState extends BMFBaseMapState<MapPage> {
                   maxZoomLevel: 18,
                   minZoomLevel: 8,
                   mapPadding:
-                      BMFEdgeInsets(top: 0, left: 50, right: 50, bottom: 0),
+                  BMFEdgeInsets(top: 0, left: 50, right: 50, bottom: 0),
                 ),
               ),
             );
@@ -136,7 +150,7 @@ class _MapPageState extends BMFBaseMapState<MapPage> {
     Stream<Map<String, Object>> stream = baiduGps();
     stream.listen((event) {
       BMFCoordinate coordinate =
-      BMFCoordinate(event["latitude"], event["longitude"]);
+          BMFCoordinate(event["latitude"], event["longitude"]);
       BMFLocation location = BMFLocation(
           coordinate: coordinate,
           altitude: 0,
@@ -231,18 +245,94 @@ class _MapPageState extends BMFBaseMapState<MapPage> {
   }
 
   void addMuseums() async {
-    List<MuseumBasicInformation> l = await MuseumBasicInformationService
-        .getMuseumList();
+    List<MuseumBasicInformation> l =
+    await MuseumBasicInformationService.getMuseumList();
     for (MuseumBasicInformation obj in l) {
       BMFMarker marker = BMFMarker(
           position: BMFCoordinate(
               double.parse(obj.latitude), double.parse(obj.longitude)),
-          title: obj.museumName,
+          title: obj.museumID.toString(),
           subtitle: 'test',
-          identifier: obj.museumName,
+          identifier: obj.museumID.toString(),
           icon: 'resource/icons8-museum-64.png');
       // bool result;
+      maker2museum.addAll({marker.Id: obj.museumID.toString()});
       myMapController?.addMarker(marker);
     }
   }
+}
+
+Widget museumInfoWindow(int museumID) {
+  return FutureBuilder<List<Exhibition>>(
+    future: ExhibitionService.getExhibitionListByMuseumID(museumID: museumID),
+    builder: (context, snapshot) {
+      if (snapshot.hasData) {
+        return (Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Portrait(
+              radius: 30.0,
+              imageProvider: NetworkImage(
+                'https://ss0.bdstatic.com/70cFuHSh_Q1YnxGkpoWK1HF6hhy/it/u=2846913929,4125395355&fm=26&gp=0.jpg',
+              ),
+            ),
+            Text(
+              '博物馆', //snapshot.data[0].museumName,
+              style: TextStyle(
+                color: Colors.teal.shade100,
+                fontSize: ScreenUtil().setSp(20.0),
+                fontWeight: FontWeight.bold,
+                decoration: TextDecoration.none,
+              ),
+            ),
+            SizedBox(
+              height: ScreenUtil().setHeight(20.0),
+              width: ScreenUtil().setWidth(150.0),
+              child: (Divider(
+                color: Colors.teal.shade100,
+              )),
+            ),
+            Text(
+              'exhibitionIntroduction',
+              //snapshot.data[0].exhibitionIntroduction,
+              style: TextStyle(
+                color: Colors.teal.shade100,
+                fontSize: ScreenUtil().setSp(15.0),
+                // fontWeight: FontWeight.bold,
+                decoration: TextDecoration.none,
+              ),
+            ),
+            SizedBox(height: ScreenUtil().setHeight(50.0),),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                FlatButton(
+                  color: Colors.lightBlue,
+                  onPressed: () {
+                    print(1);
+                  },
+                  child: Text(
+                    '进入博物馆',
+                  ),
+                ),
+                FlatButton(
+                  color: Colors.lightBlue,
+                  onPressed: () {
+                    print(2);
+                  },
+                  child: Text(
+                    '进入视频讲解',
+                  ),
+                ),
+              ],
+            )
+          ],
+        ));
+      } else {
+        return Center(
+          child: CircularProgressIndicator(),
+        );
+      }
+    },
+  );
 }
