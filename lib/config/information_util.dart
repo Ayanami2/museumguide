@@ -1,7 +1,3 @@
-///author:swg
-///updateDate:2021/4/23
-///updateBy:swg
-
 import 'package:flutter/material.dart';
 
 class Information {
