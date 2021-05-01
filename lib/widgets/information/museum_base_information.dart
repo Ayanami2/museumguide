@@ -8,8 +8,7 @@ class MuseumBaseInformation extends StatelessWidget {
   MuseumBaseInformation({Key key, this.museumBaseInformation})
       : super(key: key);
 
-  @override
-  Widget build(BuildContext context) {
+  Widget getInformation() {
     return Container(
       margin: EdgeInsets.all(2.0),
       padding: EdgeInsets.all(3.0),
@@ -21,7 +20,7 @@ class MuseumBaseInformation extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            '基本信息',
+            '博物馆信息',
             style: TextStyle(fontSize: ScreenUtil().setSp(25.0)),
           ),
           Divider(
@@ -54,6 +53,27 @@ class MuseumBaseInformation extends StatelessWidget {
             context: museumBaseInformation.introduction,
           )
         ],
+      ),
+    );
+  }
+
+  Widget getVideo() {
+    return Container(
+      margin: EdgeInsets.all(2.0),
+      padding: EdgeInsets.all(3.0),
+      decoration: BoxDecoration(
+        color: Colors.grey[100],
+        borderRadius: BorderRadius.circular(ScreenUtil().setWidth(10.0)),
+      ),
+      child: Text(museumBaseInformation.publicityVideoLink),
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      child: Column(
+        children: [getInformation(), getVideo()],
       ),
     );
   }

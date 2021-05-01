@@ -23,7 +23,7 @@ class MuseumItem extends StatelessWidget {
             context,
             MaterialPageRoute(
                 builder: (context) => MuseumInformation(
-                      museumInformation: information,
+                      museumID: information.museumID,
                     ))),
         child: Row(
           children: [
