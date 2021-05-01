@@ -15,8 +15,6 @@ import 'package:museumguide/config/index.dart';
 import 'package:museumguide/page/video_select.dart';
 
 void main() async {
-  // var response = await http.post(ServerUrl.BASE_URL+'/test.php');
-  // print(response.body);
   if (Platform.isIOS) {
     BMFMapSDK.setApiKeyAndCoordType(
         '请输入百度开放平台申请的iOS端API KEY', BMF_COORD_TYPE.BD09LL);

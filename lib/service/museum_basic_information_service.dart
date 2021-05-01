@@ -32,4 +32,19 @@ class MuseumBasicInformationService {
     }
     return res;
   }
+
+static Future<List<int>> getMuseumIDList() async {
+    final response =
+        await http.post(ServerUrl.MUSEUM_BASIC_INFORMATION_URL, body: {
+      "action": "getMuseumIDList",
+    });
+    // print(response.body);
+    var list = jsonDecode(response.body);
+    print(list.runtimeType);
+    List<int> res = [];
+    for (var obj in list) {
+      res.add(int.parse(obj["museumID"]));
+    }
+    return res;
+  }
 }

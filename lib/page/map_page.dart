@@ -302,9 +302,11 @@ Widget museumInfoWindow(int museumID) {
                 decoration: TextDecoration.none,
               ),
             ),
-            SizedBox(height: ScreenUtil().setHeight(50.0),),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
+            SizedBox(
+              height: ScreenUtil().setHeight(50.0),
+            ),
+            Column(
+              // mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 FlatButton(
                   color: Colors.lightBlue,
