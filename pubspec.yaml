@@ -21,6 +21,10 @@ environment:
   sdk: ">=2.7.0 <3.0.0"
 
 dependencies:
+  firebase_storage:
+  firebase_core: ^0.3.4
+  firebase_auth: ^0.8.4+4
+  video_thumbnail: 0.2.5
   video_player: 0.10.2+1
   image_picker: ^0.6.7+22
   flutter_baidu_mapapi_map: ^2.0.1
