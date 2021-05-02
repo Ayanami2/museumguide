@@ -1,7 +1,3 @@
-///author:swg
-///updateDate:2021/4/23
-///updateBy:swg
-
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../../service/index.dart';
@@ -37,7 +33,9 @@ class _MuseumListPageState extends State<MuseumListPage> {
                       ),
                   itemCount: list.length);
             } else {
-              return Center();
+              return Center(
+                child: CircularProgressIndicator(),
+              );
             }
           },
         ),

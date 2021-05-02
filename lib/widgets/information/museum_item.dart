@@ -1,11 +1,8 @@
-///author:swg
-///updateDate:2021/4/23
-///updateBy:swg
-
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../../models/index.dart';
 import '../../config/information_util.dart';
+import '../../page/information/museum_information.dart';
 
 class MuseumItem extends StatelessWidget {
   final MuseumBasicInformation information;
@@ -22,7 +19,12 @@ class MuseumItem extends StatelessWidget {
         borderRadius: BorderRadius.circular(ScreenUtil().setWidth(10.0)),
       ),
       child: GestureDetector(
-        onTap: () => null,
+        onTap: () => Navigator.push(
+            context,
+            MaterialPageRoute(
+                builder: (context) => MuseumInformation(
+                      museumID: information.museumID,
+                    ))),
         child: Row(
           children: [
             Icon(
