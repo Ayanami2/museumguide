@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../../service/index.dart';
-import '../../widgets/information/museum_base_information.dart';
+import '../../widgets/information/base_information.dart';
 import '../../models/index.dart';
 
 class MuseumInformation extends StatefulWidget {
@@ -13,26 +13,25 @@ class MuseumInformation extends StatefulWidget {
   _MuseumInformationState createState() => _MuseumInformationState();
 }
 
-class _MuseumInformationState extends State<MuseumInformation> {
+class _MuseumInformationState extends State<MuseumInformation>
+    with SingleTickerProviderStateMixin {
   MuseumBasicInformation museumBasicInformation;
   List<Exhibition> exhibitionList;
   num widgetIndex;
-
-  void getData() async {
-    MuseumBasicInformationService.getMuseumByMuseumID(museumID: widget.museumID)
-        .then((value) => setState(() => museumBasicInformation = value));
-    ExhibitionService.getExhibitionListByMuseumID(museumID: widget.museumID)
-        .then((value) => setState(() => exhibitionList = value));
-  }
+  TabController _tabController;
 
   @override
   void initState() {
     super.initState();
-    getData();
+    MuseumBasicInformationService.getMuseumByMuseumID(museumID: widget.museumID)
+        .then((value) => setState(() => museumBasicInformation = value));
+    ExhibitionService.getExhibitionListByMuseumID(museumID: widget.museumID)
+        .then((value) => setState(() => exhibitionList = value));
     widgetIndex = 0;
+    this._tabController = TabController(length: 3, vsync: this);
   }
 
-  Widget getButton(String data, num index) {
+  /*Widget getButton(String data, num index) {
     return GestureDetector(
       onTap: () => setState(() => widgetIndex = index),
       child: Text(
@@ -40,62 +39,54 @@ class _MuseumInformationState extends State<MuseumInformation> {
         style: TextStyle(fontSize: ScreenUtil().setSp(18.0)),
       ),
     );
-  }
+  }*/
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text('museum'),
-        centerTitle: true,
-      ),
-      body: (museumBasicInformation == null || exhibitionList == null)
-          ? Center(
-              child: CircularProgressIndicator(),
-            )
-          : Container(
+    return (museumBasicInformation == null || exhibitionList == null)
+        ? Center(child: CircularProgressIndicator())
+        : Scaffold(
+            appBar: AppBar(
+              elevation: 0.0,
+              title: Text(
+                museumBasicInformation.museumName,
+                style: TextStyle(fontSize: ScreenUtil().setSp(30.0)),
+              ),
+              centerTitle: true,
+            ),
+            body: Container(
               child: Column(
                 children: [
                   Container(
-                    alignment: Alignment.center,
-                    margin: EdgeInsets.all(2.0),
-                    padding: EdgeInsets.all(3.0),
-                    decoration: BoxDecoration(
-                      color: Colors.grey[200],
-                      borderRadius:
-                          BorderRadius.circular(ScreenUtil().setWidth(10.0)),
+                    color: Colors.teal,
+                    child: TabBar(
+                      controller: _tabController,
+                      tabs: [
+                        Tab(text: "基本信息"),
+                        Tab(text: "展览信息"),
+                        Tab(text: "藏品信息"),
+                      ],
                     ),
-                    child: Column(
+                  ),
+                  Expanded(
+                    child: TabBarView(
+                      controller: _tabController,
                       children: [
-                        Text(
-                          museumBasicInformation.museumName,
-                          style: TextStyle(fontSize: ScreenUtil().setSp(40.0)),
+                        BaseInformation(
+                          museumBaseInformation: museumBasicInformation,
+                        ),
+                        Center(
+                          child: Text('exhibition'),
+                        ),
+                        Center(
+                          child: Text('collection'),
                         )
                       ],
                     ),
                   ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceAround,
-                    children: [
-                      getButton('基本信息', 0),
-                      getButton('展览信息', 1),
-                      getButton('藏品信息', 2)
-                    ],
-                  ),
-                  widgetIndex == 0
-                      ? MuseumBaseInformation(
-                          museumBaseInformation: museumBasicInformation,
-                        )
-                      : widgetIndex == 1
-                          ? Center(
-                              child: Text('exhibition'),
-                            )
-                          : Center(
-                              child: Text('collection'),
-                            )
                 ],
               ),
             ),
-    );
+          );
   }
 }
