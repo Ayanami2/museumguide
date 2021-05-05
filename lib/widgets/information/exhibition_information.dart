@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-class MuseumExhibitionInformation extends StatelessWidget {
+class ExhibitionInformation extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
