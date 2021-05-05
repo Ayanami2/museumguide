@@ -21,6 +21,8 @@ environment:
   sdk: ">=2.7.0 <3.0.0"
 
 dependencies:
+  chewie:
+  cloud_firestore:
   firebase_storage:
   firebase_core: ^0.3.4
   firebase_auth: ^0.8.4+4

@@ -4,6 +4,7 @@ import 'package:flutter_bmflocation/bdmap_location_flutter_plugin.dart';
 import 'package:flutter_bmflocation/flutter_baidu_location.dart';
 import 'package:flutter_bmflocation/flutter_baidu_location_android_option.dart';
 import 'package:flutter_bmflocation/flutter_baidu_location_ios_option.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 class CommentPage extends StatefulWidget {
   @override
   _CommentPageState createState() => _CommentPageState();
@@ -20,8 +21,15 @@ class _CommentPageState extends State<CommentPage> {
       home: SafeArea(
         child: Scaffold(
           appBar: AppBar(
+
             centerTitle: true,
-     
+            leadingWidth: 90,
+            leading: FlatButton(
+              onPressed: (){
+                Navigator.pushNamed(context, 'my_videos');
+              },
+              child: Text("我的视频"),
+            ),
             title: Text("视频浏览"),
             actions: [
               FlatButton(
