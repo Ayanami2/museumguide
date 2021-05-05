@@ -215,21 +215,21 @@ packages:
     dependency: "direct main"
     description:
       name: firebase_auth
-      url: "https://pub.flutter-io.cn"
+      url: "http://pub.flutter-io.cn"
     source: hosted
     version: "0.8.4+5"
   firebase_core:
     dependency: "direct main"
     description:
       name: firebase_core
-      url: "https://pub.flutter-io.cn"
+      url: "http://pub.flutter-io.cn"
     source: hosted
     version: "0.3.4"
   firebase_storage:
     dependency: "direct main"
     description:
       name: firebase_storage
-      url: "https://pub.flutter-io.cn"
+      url: "http://pub.flutter-io.cn"
     source: hosted
     version: "2.1.1+2"
   fixnum:
@@ -800,7 +800,7 @@ packages:
     dependency: "direct main"
     description:
       name: video_thumbnail
-      url: "https://pub.flutter-io.cn"
+      url: "http://pub.flutter-io.cn"
     source: hosted
     version: "0.2.5"
   watcher:
