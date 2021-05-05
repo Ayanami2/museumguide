@@ -20,17 +20,19 @@ class _CommentPageState extends State<CommentPage> {
       home: SafeArea(
         child: Scaffold(
           appBar: AppBar(
+            centerTitle: true,
+     
             title: Text("视频浏览"),
-          ),
-          body: FlatButton(
-            onPressed: (){
-              Navigator.pushNamed(context,'video_select_page');
-            },
-            child: Center(
-              child: Text("视频上传"
+            actions: [
+              FlatButton(
+                onPressed: (){
+                  Navigator.pushNamed(context,'video_select_page');
+                },
+                child: Text("发布视频"),
               ),
-            ),
+            ],
           ),
+          body:Center(child: CircularProgressIndicator()),
         ),
       ),
     );
