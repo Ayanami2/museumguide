@@ -4,7 +4,7 @@ part 'exhibition.g.dart';
 
 @JsonSerializable()
 class Exhibition {
-  Exhibition();
+    Exhibition();
 
   num exhibitionID;
   String exhibitionName;
