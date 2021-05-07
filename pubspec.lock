@@ -120,6 +120,13 @@ packages:
       url: "https://pub.flutter-io.cn"
     source: hosted
     version: "1.0.4"
+  chewie:
+    dependency: "direct main"
+    description:
+      name: chewie
+      url: "https://pub.flutter-io.cn"
+    source: hosted
+    version: "0.10.0"
   clock:
     dependency: transitive
     description:
@@ -127,6 +134,13 @@ packages:
       url: "https://pub.flutter-io.cn"
     source: hosted
     version: "1.1.0-nullsafety.1"
+  cloud_firestore:
+    dependency: "direct main"
+    description:
+      name: cloud_firestore
+      url: "https://pub.flutter-io.cn"
+    source: hosted
+    version: "0.10.1"
   code_builder:
     dependency: transitive
     description:
@@ -211,6 +225,27 @@ packages:
       url: "https://pub.flutter-io.cn"
     source: hosted
     version: "5.2.1"
+  firebase_auth:
+    dependency: "direct main"
+    description:
+      name: firebase_auth
+      url: "https://pub.flutter-io.cn"
+    source: hosted
+    version: "0.8.4+5"
+  firebase_core:
+    dependency: "direct main"
+    description:
+      name: firebase_core
+      url: "https://pub.flutter-io.cn"
+    source: hosted
+    version: "0.3.4"
+  firebase_storage:
+    dependency: "direct main"
+    description:
+      name: firebase_storage
+      url: "https://pub.flutter-io.cn"
+    source: hosted
+    version: "2.1.1+2"
   fixnum:
     dependency: transitive
     description:
@@ -487,6 +522,13 @@ packages:
     dependency: transitive
     description:
       name: octo_image
+      url: "https://pub.flutter-io.cn"
+    source: hosted
+    version: "0.3.0"
+  open_iconic_flutter:
+    dependency: transitive
+    description:
+      name: open_iconic_flutter
       url: "https://pub.flutter-io.cn"
     source: hosted
     version: "0.3.0"
@@ -775,6 +817,20 @@ packages:
       url: "https://pub.flutter-io.cn"
     source: hosted
     version: "0.10.2+1"
+  video_thumbnail:
+    dependency: "direct main"
+    description:
+      name: video_thumbnail
+      url: "https://pub.flutter-io.cn"
+    source: hosted
+    version: "0.2.5"
+  wakelock:
+    dependency: transitive
+    description:
+      name: wakelock
+      url: "https://pub.flutter-io.cn"
+    source: hosted
+    version: "0.1.4+2"
   watcher:
     dependency: transitive
     description:

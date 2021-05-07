@@ -7,6 +7,7 @@ import 'package:museumguide/page/home_page.dart';
 import 'package:museumguide/page/map_page.dart';
 import 'package:museumguide/page/mine/mine_page.dart';
 import 'package:museumguide/page/mine/settings.dart';
+import 'package:museumguide/page/my_videos.dart';
 import 'package:museumguide/service/index.dart';
 import 'package:museumguide/models/index.dart';
 import 'package:http/http.dart' as http;
@@ -49,6 +50,7 @@ class MyApp extends StatelessWidget {
         'mine_page': (context) => (MinePage()),
         'settings_page': (context) => (SettingsPage()),
         'video_select_page': (context) => (VideoSelectPage()),
+        'my_videos': (context) => (MyVideo()),
       }),
     );
   }

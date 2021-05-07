@@ -2,11 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../../models/index.dart';
 
-class MuseumBaseInformation extends StatelessWidget {
+class BaseInformation extends StatelessWidget {
   final MuseumBasicInformation museumBaseInformation;
 
-  MuseumBaseInformation({Key key, this.museumBaseInformation})
-      : super(key: key);
+  BaseInformation({Key key, this.museumBaseInformation}) : super(key: key);
 
   Widget getInformation() {
     return Container(
@@ -73,7 +72,10 @@ class MuseumBaseInformation extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       child: Column(
-        children: [getInformation(), getVideo()],
+        children: [
+          getInformation(),
+          getVideo(),
+        ],
       ),
     );
   }

@@ -9,6 +9,7 @@ import 'comment_page.dart';
 import 'map_page.dart';
 import 'information/museum_list_page.dart';
 import 'video_select.dart';
+import 'my_videos.dart';
 
 class HomePage extends StatefulWidget {
   @override
@@ -32,6 +33,7 @@ class _HomePageState extends State<HomePage> {
       CommentPage(),
       MinePage(),
       VideoSelectPage(),
+      MyVideo(),
     ];
   }
 
