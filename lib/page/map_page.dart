@@ -41,12 +41,12 @@ class _MapPageState extends BMFBaseMapState<MapPage> {
 
     /// 地图加载回调
 
-    // if (_showUserLocation) {
-    //   myMapController?.showUserLocation(true);
-    //   updateUserLocation();
-    //   myMapController?.setUserTrackingMode(_userTrackingMode);
-    //   // updatUserLocationDisplayParam();
-    // }
+    if (_showUserLocation) {
+      myMapController?.showUserLocation(true);
+      updateUserLocation();
+      myMapController?.setUserTrackingMode(_userTrackingMode);
+      // updatUserLocationDisplayParam();
+    }
     BMFCoordinate bmfCoordinate = BMFCoordinate(40.258911, 116.15437);
     addStartMarker(bmfCoordinate);
     bmfCoordinate = BMFCoordinate(39.924091, 116.4034147);
