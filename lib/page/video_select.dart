@@ -9,6 +9,8 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:chewie/chewie.dart';
+import 'package:chewie/src/chewie_player.dart';
 
 final _firestore = Firestore.instance;
 class VideoSelectPage extends StatefulWidget {
@@ -26,6 +28,7 @@ class _VideoSelectPageState extends State<VideoSelectPage> {
   bool k1=false;
   bool k3=false;
   String getURL;
+  var urll;
 
   File _video;
   ImagePicker picker = ImagePicker();
@@ -52,6 +55,8 @@ class _VideoSelectPageState extends State<VideoSelectPage> {
     else print(thumbnailPath);
 
     print(thumbnailPath);
+    _videoPlayerController = VideoPlayerController.file(_video);
+
     _videoPlayerController = VideoPlayerController.file(_video)
       ..initialize().then((_) {
         setState(() {});
@@ -67,22 +72,37 @@ class _VideoSelectPageState extends State<VideoSelectPage> {
         .ref()
         .child('$username/$folder/$name');
     final StorageUploadTask task = firebaseStorageRef.putFile(file);
+    await task.onComplete;
     getURL = await firebaseStorageRef.getDownloadURL();
-    print('geturl'+getURL);
+
+    /*
+    urll = Uri.parse(await firebaseStorageRef.getDownloadURL() as String);
+    print("urlll:");
+    print(urll);*/
+
+    print("uri:"+getURL.toString());
     k3=true;
     print('k3:'+k3.toString());
 
-
-    _firestore.collection('${username}').document("test").setData({
+    _firestore.collection('VideoCollection').add({
+      'username': username,
       'title': title,
       'introduction': introuction,
       'url':getURL,
-      'time': DateTime.now(),
+      'time': DateTime.now().toString(),
+    });
+
+    _firestore.collection('${username}').add({
+      'title': title,
+      'introduction': introuction,
+      'url':getURL,
+      'time': DateTime.now().toString(),
     });
 
   }
 
   Widget BOX(){
+
     if(_video==null)
       return Container(
         width: ScreenUtil().setWidth(360.0),
@@ -93,10 +113,15 @@ class _VideoSelectPageState extends State<VideoSelectPage> {
         ),
       );
     if (_video != null) {
-      _videoPlayerController.value.initialized;
+      _videoPlayerController.initialize();
       return AspectRatio(
-        aspectRatio: 16.0 / 9.0,
-        child: VideoPlayer(_videoPlayerController),
+        aspectRatio: _videoPlayerController.value.aspectRatio,
+        child: Chewie(
+          controller:ChewieController(videoPlayerController: _videoPlayerController,
+          autoPlay: false,
+          looping: true,
+      ),
+      ),
       );
 
     }
@@ -127,41 +152,6 @@ class _VideoSelectPageState extends State<VideoSelectPage> {
           body: SingleChildScrollView(
             child: Column(children: [
               BOX(),
- /*
-              if (_video != null)
-                _videoPlayerController.value.initialized
-                    ? AspectRatio(
-                  aspectRatio: 16.0/9.0,
-                  child: VideoPlayer(_videoPlayerController),
-                )
-                    : Container(
-                ),
-
-             Portrait(
-              radius: 20,
-              imageProvider:
-              Image.memory(ImageUtil.base642Image(thumbnailPath))
-                  .image,
-            ),
-              FutureBuilder(
-                future: thumbnailPath,
-                  builder: (context,snapshot){
-                    if (!snapshot.hasData) {
-                      return Portrait(
-                        radius: 20,
-                        imageProvider: NetworkImage(
-                            'http://img8.zol.com.cn/bbs/upload/23765/23764201.jpg'),
-                      );
-                    }
-
-                return Portrait(
-                  radius: 20,
-                  imageProvider:
-                  Image.memory(ImageUtil.base642Image(snapshot.data))
-                      .image,
-                );
-              }),*/
-
               Row(
                 children: [
                   Expanded(
@@ -347,20 +337,6 @@ class _VideoSelectPageState extends State<VideoSelectPage> {
           ),
         ),
       ),
-    );
-  }
-}
-class Portrait extends StatelessWidget {
-  Portrait({this.radius, this.imageProvider});
-  final double radius;
-  final ImageProvider imageProvider;
-
-  @override
-  Widget build(BuildContext context) {
-    return CircleAvatar(
-      radius: radius,
-      foregroundColor: Colors.redAccent,
-      backgroundImage: imageProvider,
     );
   }
 }

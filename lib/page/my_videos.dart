@@ -10,9 +10,10 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:chewie/chewie.dart';
 import 'package:chewie/src/chewie_player.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 
 final _firestore = Firestore.instance;
-String username='swgk';
+String username="swgk";
 class MyVideo extends StatefulWidget {
   @override
   _MyVideoState createState() => _MyVideoState();
@@ -33,16 +34,18 @@ class _MyVideoState extends State<MyVideo> {
             icon: Icon(Icons.arrow_back_rounded),
           ),
         ),
-        body: Container(
-          height: 300,
-          width: 360,
-          child: MessagesStream(),
+        body:SafeArea(
+          child: Column(
+            children:[
+              MessagesStream(),
+          ]
+          ),
         ),
       ),
     );
   }
 }
-/*
+
 class MessagesStream extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -75,7 +78,7 @@ class MessagesStream extends StatelessWidget {
         }
         return Expanded(
           child: ListView(
-            padding: EdgeInsets.symmetric(horizontal: 10.0, vertical: 20.0),
+            reverse: true,
             children: messageBubbles,
           ),
         );
@@ -83,20 +86,20 @@ class MessagesStream extends StatelessWidget {
     );
   }
 }
-*/
 
+/*
 class MessagesStream extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return VideoList(title: '故宫',introduction: '故宫博物院');
 
   }
-}
+}*/
 
 class VideoList extends StatelessWidget{
   VideoList({this.title, this.introduction, this.url,this.time}){
     _videoPlayerController1 = VideoPlayerController.network(
-        'https://img.dpm.org.cn/Uploads/video/8dazuo_hubiao.mp4'
+        '$url.mp4'
     );
     _videoPlayerController1.initialize();
   }
@@ -107,7 +110,6 @@ class VideoList extends StatelessWidget{
   final String time;
   VideoPlayerController _videoPlayerController1;
 
-
   @override
   void dispose() {
     _videoPlayerController1.dispose();
@@ -115,27 +117,19 @@ class VideoList extends StatelessWidget{
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: EdgeInsets.all(10.0),
-      child: Column(
-        children: [
-          Expanded(
-            child: Chewie(
-              controller:ChewieController(videoPlayerController: _videoPlayerController1,
-                  autoPlay: true,
-                  looping: true,
-                  aspectRatio: 16/9),
-            ),
-          ),
-          Container(
-            color: Colors.grey[350],
-            child: Text('$title',
-            style: TextStyle(fontSize: 20),),
-          ),
-          Text('$username',
-            style: TextStyle(fontSize: 10),),
-        ],
-      ),
+    return Column(
+      children: [
+        Chewie(
+          controller:ChewieController(videoPlayerController: _videoPlayerController1,
+              autoPlay: false,
+              looping: true,
+              aspectRatio: 16/9),
+        ),
+        Text(title,
+        style: TextStyle(fontSize: 20),),
+        Text('${username+time}',
+          style: TextStyle(fontSize: 10),),
+      ],
     );
   }
 }
