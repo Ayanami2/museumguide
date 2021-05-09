@@ -118,27 +118,32 @@ class VideoList extends StatefulWidget {
 }
 
 class _VideoListState extends State<VideoList> {
-  _VideoListState({this.title, this.introduction, this.url, this.time,this.name}){
-    _videoPlayerController1 = VideoPlayerController.network('$url.mp4');
-  }
+  _VideoListState({this.title, this.introduction, this.url, this.time,this.name});
   final String title;
   final String introduction;
   final String url;
   String time;
   String name;
   VideoPlayerController _videoPlayerController1;
-
+  ChewieController _chewieController;
 
   void initState() {
     super.initState();
     // 生成控制器(两个)
     _videoPlayerController1 = VideoPlayerController.network('$url.mp4');
+    _videoPlayerController1.initialize();
+    _chewieController = ChewieController(
+        videoPlayerController: _videoPlayerController1,
+        autoPlay: false,
+        looping: true,
+        aspectRatio: 16 / 9);
   }
 
   @override
   void dispose() {
     super.dispose();
     _videoPlayerController1.dispose();
+    _chewieController.dispose();
   }
   @override
   Widget build(BuildContext context) {
@@ -162,11 +167,7 @@ class _VideoListState extends State<VideoList> {
           AspectRatio(
             aspectRatio: _videoPlayerController1.value.aspectRatio,
             child: Chewie(
-              controller: ChewieController(
-                  videoPlayerController: _videoPlayerController1,
-                  autoPlay: false,
-                  looping: true,
-                  aspectRatio: 16 / 9),
+              controller: _chewieController,
             ),
           ),
           Text(
