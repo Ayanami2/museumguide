@@ -35,6 +35,8 @@ dependencies:
   flutter_bmflocation: ^1.0.2
   flutter:
     sdk: flutter
+  css_colors: ^1.0.0
+  flutter_spinkit: ^2.1.0
   http:
   flutter_localizations:
     sdk: flutter
@@ -71,7 +73,9 @@ flutter:
   uses-material-design: true
   assets:
     - resource/
-
+    - images/login.jpg
+    - images/aboutus.jpg
+    - images/headportrait.jpg
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.
 

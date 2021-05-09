@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:museumguide/config/index.dart';
 import 'package:museumguide/widgets/index.dart';
+import 'package:museumguide/common/global.dart';
 
 class MinePage extends StatefulWidget {
   @override
@@ -10,12 +11,17 @@ class MinePage extends StatefulWidget {
 }
 
 class _MinePageState extends State<MinePage> {
-  final String nickname = '肖开源'; //昵称
-  final String portrait =
-      'https://ss0.bdstatic.com/70cFuHSh_Q1YnxGkpoWK1HF6hhy/it/u=2846913929,4125395355&fm=26&gp=0.jpg'; //我的头像
+
+
 
   @override
   Widget build(BuildContext context) {
+    String nickname ='唐伯虎';//昵称
+    if(Global.user.nickName!=null&&Global.user.nickName!='') {
+        nickname=Global.user.nickName;
+      }
+    String portrait =
+        'https://ss0.bdstatic.com/70cFuHSh_Q1YnxGkpoWK1HF6hhy/it/u=2846913929,4125395355&fm=26&gp=0.jpg'; //我的头像
     return Scaffold(
       body: ListView(
         children: [
@@ -56,17 +62,17 @@ class _MinePageState extends State<MinePage> {
                 color: Color(0xffd3d3d3),
               ),
               //收藏
-              IconTextArrowWidget(
-                  KIcon.COLLECTION, KString.COLLECTION, Colors.red, () {
-                Navigator.pushNamed(context, 'collection');
-              }),
-              Divider(
-                height: ScreenUtil().setHeight(1.0),
-                color: Color(0xffd3d3d3),
-              ),
+              // IconTextArrowWidget(
+              //     KIcon.COLLECTION, KString.COLLECTION, Colors.red, () {
+              //   Navigator.pushNamed(context, 'collection');
+              // }),
+              // Divider(
+              //   height: ScreenUtil().setHeight(1.0),
+              //   color: Color(0xffd3d3d3),
+              // ),
               IconTextArrowWidget(
                   KIcon.SETTINGS, KString.SETTINGS, Colors.amber, () {
-                Navigator.pushNamed(context, 'settings_page');
+                Navigator.pushNamed(context, 'setting_page');
               }),
               Divider(
                 height: ScreenUtil().setHeight(1.0),

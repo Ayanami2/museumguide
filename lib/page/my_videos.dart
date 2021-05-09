@@ -13,7 +13,8 @@ import 'package:chewie/src/chewie_player.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 
 final _firestore = Firestore.instance;
-String username="swgk";
+String username = 'swgk';
+
 class MyVideo extends StatefulWidget {
   @override
   _MyVideoState createState() => _MyVideoState();
@@ -28,18 +29,16 @@ class _MyVideoState extends State<MyVideo> {
           title: Text('我的视频'),
           centerTitle: true,
           leading: IconButton(
-            onPressed: (){
+            onPressed: () {
               Navigator.pop(context);
             },
             icon: Icon(Icons.arrow_back_rounded),
           ),
         ),
-        body:SafeArea(
-          child: Column(
-            children:[
-              MessagesStream(),
-          ]
-          ),
+        body: SafeArea(
+          child: Column(children: [
+            MessagesStream(),
+          ]),
         ),
       ),
     );
@@ -51,7 +50,7 @@ class MessagesStream extends StatelessWidget {
   Widget build(BuildContext context) {
     return StreamBuilder<QuerySnapshot>(
       stream: _firestore.collection(username).snapshots(),
-      builder: ( context,snapshot) {
+      builder: (context, snapshot) {
         if (!snapshot.hasData) {
           return Center(
             child: CircularProgressIndicator(
@@ -91,17 +90,13 @@ class MessagesStream extends StatelessWidget {
 class MessagesStream extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return VideoList(title: '故宫',introduction: '故宫博物院');
-
+    return VideoList(title: '故宫', introduction: '故宫博物院');
   }
 }*/
 
-class VideoList extends StatelessWidget{
-  VideoList({this.title, this.introduction, this.url,this.time}){
-    _videoPlayerController1 = VideoPlayerController.network(
-        '$url.mp4'
-    );
-    _videoPlayerController1.initialize();
+class VideoList extends StatelessWidget {
+  VideoList({this.title, this.introduction, this.url, this.time}) {
+    _videoPlayerController1 = VideoPlayerController.network('$url.mp4');
   }
 
   final String title;
@@ -120,15 +115,20 @@ class VideoList extends StatelessWidget{
     return Column(
       children: [
         Chewie(
-          controller:ChewieController(videoPlayerController: _videoPlayerController1,
+          controller: ChewieController(
+              videoPlayerController: _videoPlayerController1,
               autoPlay: false,
               looping: true,
-              aspectRatio: 16/9),
+              aspectRatio: 16 / 9),
         ),
-        Text(title,
-        style: TextStyle(fontSize: 20),),
-        Text('${username+time}',
-          style: TextStyle(fontSize: 10),),
+        Text(
+          title,
+          style: TextStyle(fontSize: 20),
+        ),
+        Text(
+          '${username + time}',
+          style: TextStyle(fontSize: 10),
+        ),
       ],
     );
   }

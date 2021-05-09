@@ -13,6 +13,7 @@ import 'package:chewie/chewie.dart';
 import 'package:chewie/src/chewie_player.dart';
 
 final _firestore = Firestore.instance;
+
 class VideoSelectPage extends StatefulWidget {
   @override
   _VideoSelectPageState createState() => _VideoSelectPageState();
@@ -25,8 +26,8 @@ class _VideoSelectPageState extends State<VideoSelectPage> {
   String title;
   String introuction;
   String username;
-  bool k1=false;
-  bool k3=false;
+  bool k1 = false;
+  bool k3 = false;
   String getURL;
   var urll;
 
@@ -36,9 +37,9 @@ class _VideoSelectPageState extends State<VideoSelectPage> {
   var thumbnailPath;
 
   _pickVideo() async {
-    username="swgk";
-    PickedFile video =
-    await picker.getVideo(source: ImageSource.gallery, maxDuration: const Duration(seconds: 10));
+    username = "swgk";
+    PickedFile video = await picker.getVideo(
+        source: ImageSource.gallery, maxDuration: const Duration(seconds: 10));
     _video = File(video.path);
     print(111);
     print(_video.path);
@@ -47,12 +48,12 @@ class _VideoSelectPageState extends State<VideoSelectPage> {
         video: video.path,
         imageFormat: ImageFormat.PNG,
         maxWidth: 128,
-        quality: 25
-    );
+        quality: 25);
     print('thumbnailPath');
-    if(thumbnailPath==null)
+    if (thumbnailPath == null)
       print("kongkong");
-    else print(thumbnailPath);
+    else
+      print(thumbnailPath);
 
     print(thumbnailPath);
     _videoPlayerController = VideoPlayerController.file(_video);
@@ -66,44 +67,38 @@ class _VideoSelectPageState extends State<VideoSelectPage> {
 
   Future<void> putFileToStorage(
       File file, String type, String name, String folder) async {
-
     print(type);
-    final StorageReference firebaseStorageRef = FirebaseStorage.instance
-        .ref()
-        .child('$username/$folder/$name');
+    final StorageReference firebaseStorageRef =
+    FirebaseStorage.instance.ref().child('$username/$folder/$name');
     final StorageUploadTask task = firebaseStorageRef.putFile(file);
     await task.onComplete;
     getURL = await firebaseStorageRef.getDownloadURL();
 
-    /*
-    urll = Uri.parse(await firebaseStorageRef.getDownloadURL() as String);
-    print("urlll:");
-    print(urll);*/
-
-    print("uri:"+getURL.toString());
-    k3=true;
-    print('k3:'+k3.toString());
+    print("uri:" + getURL.toString());
+    k3 = true;
+    print('k3:' + k3.toString());
 
     _firestore.collection('VideoCollection').add({
       'username': username,
       'title': title,
       'introduction': introuction,
-      'url':getURL,
+      'url': getURL,
       'time': DateTime.now().toString(),
     });
+    print('geturl' + getURL);
+    k3 = true;
+    print('k3:' + k3.toString());
 
     _firestore.collection('${username}').add({
       'title': title,
       'introduction': introuction,
-      'url':getURL,
+      'url': getURL,
       'time': DateTime.now().toString(),
     });
-
   }
 
-  Widget BOX(){
-
-    if(_video==null)
+  Widget BOX() {
+    if (_video == null)
       return Container(
         width: ScreenUtil().setWidth(360.0),
         height: ScreenUtil().setHeight(203.0),
@@ -117,13 +112,13 @@ class _VideoSelectPageState extends State<VideoSelectPage> {
       return AspectRatio(
         aspectRatio: _videoPlayerController.value.aspectRatio,
         child: Chewie(
-          controller:ChewieController(videoPlayerController: _videoPlayerController,
-          autoPlay: false,
-          looping: true,
-      ),
-      ),
+          controller: ChewieController(
+            videoPlayerController: _videoPlayerController,
+            autoPlay: false,
+            looping: true,
+          ),
+        ),
       );
-
     }
   }
 
@@ -142,7 +137,7 @@ class _VideoSelectPageState extends State<VideoSelectPage> {
             title: Text("视频上传"),
             actions: [
               FlatButton(
-                onPressed: (){
+                onPressed: () {
                   _pickVideo();
                 },
                 child: Text("选择视频"),
@@ -162,72 +157,68 @@ class _VideoSelectPageState extends State<VideoSelectPage> {
                   )
                 ],
               ),
-              Row(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    Text("标题:",
-                      style: TextStyle(
-                          fontSize: 20
-                      ),),
-                    Expanded(
-                      child: TextField(
-                        maxLength: 10,
-                        maxLengthEnforced: true,
-                        style: TextStyle(fontSize: 20),
-                        controller: titleTextController,
-                        onChanged: (value) {
-                          title = value;
-                          if(value!=null)
-                            k1=true;
-                        },
-                        decoration: InputDecoration(
-                          filled: true,
-                          fillColor: Colors.grey[300],
-                          contentPadding: EdgeInsets.symmetric(vertical: 10.0, horizontal: 10.0),
-                          hintText: '请填写标题',
-                          border: InputBorder.none,
-                        ),
-                      ),
+              Row(crossAxisAlignment: CrossAxisAlignment.center, children: [
+                Text(
+                  "标题:",
+                  style: TextStyle(fontSize: 20),
+                ),
+                Expanded(
+                  child: TextField(
+                    maxLength: 10,
+                    maxLengthEnforced: true,
+                    style: TextStyle(fontSize: 20),
+                    controller: titleTextController,
+                    onChanged: (value) {
+                      title = value;
+                      if (value != null) k1 = true;
+                    },
+                    decoration: InputDecoration(
+                      filled: true,
+                      fillColor: Colors.grey[300],
+                      contentPadding: EdgeInsets.symmetric(
+                          vertical: 10.0, horizontal: 10.0),
+                      hintText: '请填写标题',
+                      border: InputBorder.none,
                     ),
-                  ]),
+                  ),
+                ),
+              ]),
               Row(
                 children: [
                   Expanded(
                     child: Container(
-
                       height: ScreenUtil().setHeight(1),
                       color: Colors.black45,
                     ),
                   )
                 ],
               ),
-              Row(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    Text("简介:",
-                      style: TextStyle(
-                          fontSize: 20
-                      ),),
-                    Expanded(
-                      child: TextField(
-                        maxLines: 4,
-                        maxLength: 40,
-                        maxLengthEnforced: true,
-                        style: TextStyle(fontSize: 20),
-                        controller: introductionTextController,
-                        onChanged: (value) {
-                          introuction = value;
-                        },
-                        decoration: InputDecoration(
-                          filled: true,
-                          fillColor: Colors.grey[300],
-                          contentPadding: EdgeInsets.symmetric(vertical: 40.0, horizontal: 10.0),
-                          hintText: '请填简介',
-                          border: InputBorder.none,
-                        ),
-                      ),
+              Row(crossAxisAlignment: CrossAxisAlignment.center, children: [
+                Text(
+                  "简介:",
+                  style: TextStyle(fontSize: 20),
+                ),
+                Expanded(
+                  child: TextField(
+                    maxLines: 4,
+                    maxLength: 40,
+                    maxLengthEnforced: true,
+                    style: TextStyle(fontSize: 20),
+                    controller: introductionTextController,
+                    onChanged: (value) {
+                      introuction = value;
+                    },
+                    decoration: InputDecoration(
+                      filled: true,
+                      fillColor: Colors.grey[300],
+                      contentPadding: EdgeInsets.symmetric(
+                          vertical: 40.0, horizontal: 10.0),
+                      hintText: '请填简介',
+                      border: InputBorder.none,
                     ),
-                  ]),
+                  ),
+                ),
+              ]),
               Row(
                 children: [
                   Expanded(
@@ -243,7 +234,7 @@ class _VideoSelectPageState extends State<VideoSelectPage> {
                 color: Colors.blue,
                 child: FlatButton(
                   onPressed: () async {
-                    if(_video==null)
+                    if (_video == null)
                       showDialog<Null>(
                         context: context,
                         barrierDismissible: false,
@@ -252,10 +243,10 @@ class _VideoSelectPageState extends State<VideoSelectPage> {
                             title: new Text('请选择要上传的视频'),
                             actions: <Widget>[
                               new FlatButton(
-                                child: new Text('知道了'
-                                ,style: TextStyle(
-                                    color: Colors.pinkAccent
-                                  ),),
+                                child: new Text(
+                                  '知道了',
+                                  style: TextStyle(color: Colors.pinkAccent),
+                                ),
                                 onPressed: () {
                                   Navigator.of(context).pop();
                                 },
@@ -264,7 +255,7 @@ class _VideoSelectPageState extends State<VideoSelectPage> {
                           );
                         },
                       );
-                    else if(k1==false){
+                    else if (k1 == false) {
                       showDialog<Null>(
                         context: context,
                         barrierDismissible: false,
@@ -273,10 +264,10 @@ class _VideoSelectPageState extends State<VideoSelectPage> {
                             title: new Text('请填写稿件标题'),
                             actions: <Widget>[
                               new FlatButton(
-                                child: new Text('知道了'
-                                  ,style: TextStyle(
-                                      color: Colors.pinkAccent
-                                  ),),
+                                child: new Text(
+                                  '知道了',
+                                  style: TextStyle(color: Colors.pinkAccent),
+                                ),
                                 onPressed: () {
                                   Navigator.of(context).pop();
                                 },
@@ -285,11 +276,11 @@ class _VideoSelectPageState extends State<VideoSelectPage> {
                           );
                         },
                       );
-                    }
-                    else if(_video!=null){
-                      String name=_video.path.split('/')[_video.path.split('/').length-1];
+                    } else if (_video != null) {
+                      String name = _video.path
+                          .split('/')[_video.path.split('/').length - 1];
                       print(name);
-                      String type=_video.path
+                      String type = _video.path
                           .split('/')[_video.path.split('/').length - 1]
                           .split('.')[_video.path
                           .split('/')[_video.path.split('/').length - 1]
@@ -298,32 +289,34 @@ class _VideoSelectPageState extends State<VideoSelectPage> {
                           1];
                       print(type);
                       await FirebaseAuth.instance.signInAnonymously();
-                      await putFileToStorage(_video, type, title,'camera_video');
-                      if(k3)
-                      showDialog<Null>(
-                        context: context,
-                        barrierDismissible: false,
-                        builder: (BuildContext context) {
-                          return AlertDialog(
-                            title: new Text('上传成功'),
-                            actions: <Widget>[
-                              new FlatButton(
-                                child: new Text('知道了'
-                                  ,style: TextStyle(
-                                      color: Colors.pinkAccent
-                                  ),),
-                                onPressed: () {
-                                  Navigator.of(context).popAndPushNamed('comment_page');
-                                },
-                              ),
-                            ],
-                          );
-                        },
-                      );
-                      }
+                      await putFileToStorage(
+                          _video, type, title, 'camera_video');
+                      if (k3)
+                        showDialog<Null>(
+                          context: context,
+                          barrierDismissible: false,
+                          builder: (BuildContext context) {
+                            return AlertDialog(
+                              title: new Text('上传成功'),
+                              actions: <Widget>[
+                                new FlatButton(
+                                  child: new Text(
+                                    '知道了',
+                                    style: TextStyle(color: Colors.pinkAccent),
+                                  ),
+                                  onPressed: () {
+                                    Navigator.of(context)
+                                        .popAndPushNamed('comment_page');
+                                  },
+                                ),
+                              ],
+                            );
+                          },
+                        );
+                    }
+
                     ///上传视频
                     ///
-
                   },
                   child: Text(
                     "发布",

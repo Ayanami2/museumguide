@@ -4,7 +4,7 @@ part 'collection.g.dart';
 
 @JsonSerializable()
 class Collection {
-  Collection();
+    Collection();
 
   num collectionID;
   num museumID;
