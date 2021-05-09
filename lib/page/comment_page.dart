@@ -2,10 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:chewie/chewie.dart';
 import 'package:chewie/src/chewie_player.dart';
+import 'package:museumguide/models/index.dart';
 import 'package:video_player/video_player.dart';
+import 'package:museumguide/common/global.dart';
 
 final _firestore = Firestore.instance;
-String username = "swgk";
 
 class CommentPage extends StatefulWidget {
   @override
@@ -68,20 +69,28 @@ class MessagesStream extends StatelessWidget {
           final introduction = message.data['introduction'];
           final url = message.data['url'];
           final submitTime = message.data['time'];
+          final name = message.data['username'];
 
           final messageBubble = VideoList(
             title: title,
             introduction: introduction,
             url: url,
             time: submitTime,
+            name: name,
           );
 
           messageBubbles.add(messageBubble);
         }
         return Expanded(
-          child: ListView(
-            reverse: true,
-            children: messageBubbles,
+          child: Container(
+            child: ListView.separated(
+              // reverse: true,
+              itemBuilder: (context, i) {
+                return messageBubbles[i];
+              },
+              separatorBuilder: (context, i) => Divider(),
+              itemCount: messageBubbles.length,
+            ),
           ),
         );
       },
@@ -89,43 +98,86 @@ class MessagesStream extends StatelessWidget {
   }
 }
 
-class VideoList extends StatelessWidget {
-  VideoList({this.title, this.introduction, this.url, this.time}) {
-    _videoPlayerController1 = VideoPlayerController.network('$url.mp4');
-    _videoPlayerController1.initialize();
-  }
+class VideoList extends StatefulWidget {
+  VideoList({this.title, this.introduction, this.url, this.time, this.name});
 
   final String title;
   final String introduction;
   final String url;
-  final String time;
+  String time;
+  String name;
+
+  @override
+  _VideoListState createState() => _VideoListState(
+      title: title,
+      time: time,
+      url: url,
+      introduction: introduction,
+      name: name);
+}
+
+class _VideoListState extends State<VideoList> {
+  _VideoListState(
+      {this.title, this.introduction, this.url, this.time, this.name});
+
+  final String title;
+  final String introduction;
+  final String url;
+  String time;
+  String name;
   VideoPlayerController _videoPlayerController1;
+  ChewieController _chewieController;
+
+  void initState() {
+    super.initState();
+    // 生成控制器(两个)
+    _videoPlayerController1 = VideoPlayerController.network('$url.mp4');
+    _videoPlayerController1.initialize();
+    _chewieController = ChewieController(
+        videoPlayerController: _videoPlayerController1,
+        autoPlay: false,
+        looping: true,
+        aspectRatio: 16 / 9);
+  }
 
   @override
   void dispose() {
+    super.dispose();
     _videoPlayerController1.dispose();
+    _chewieController.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        Chewie(
-          controller: ChewieController(
-              videoPlayerController: _videoPlayerController1,
-              autoPlay: false,
-              looping: true,
-              aspectRatio: 16 / 9),
-        ),
-        Text(
-          title,
-          style: TextStyle(fontSize: 20),
-        ),
-        Text(
-          '${username + time}',
-          style: TextStyle(fontSize: 10),
-        ),
-      ],
+    print('time--------' + time);
+    time = time.substring(0, time.length - 7);
+    String username = '唐伯虎'; //昵称
+    if (Global.user.nickName != null && Global.user.nickName != '') {
+      username = Global.user.nickName;
+    }
+    return Container(
+      child: Column(
+        children: [
+          Text(
+            '标题：$title',
+            style: TextStyle(fontSize: 20),
+          ),
+          Text(
+            '简介：$introduction',
+            style: TextStyle(fontSize: 15),
+          ),
+          AspectRatio(
+            aspectRatio: _videoPlayerController1.value.aspectRatio,
+            child: Chewie(
+              controller: _chewieController,
+            ),
+          ),
+          Text(
+            '发布人：${name + "  发布时间：" + time}',
+            style: TextStyle(fontSize: 10),
+          ),
+        ],
+      ),
     );
   }
 }

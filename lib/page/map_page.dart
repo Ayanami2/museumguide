@@ -36,7 +36,6 @@ class _MapPageState extends BMFBaseMapState<MapPage> {
     super.onBMFMapCreated(controller);
 
     /// 地图加载回调
-
     if (_showUserLocation) {
       myMapController?.showUserLocation(true);
       updateUserLocation();
@@ -242,7 +241,7 @@ class _MapPageState extends BMFBaseMapState<MapPage> {
 
   void addMuseums() async {
     List<MuseumBasicInformation> l =
-    await MuseumBasicInformationService.getMuseumList();
+        await MuseumBasicInformationService.getMuseumList();
     for (MuseumBasicInformation obj in l) {
       BMFMarker marker = BMFMarker(
           position: BMFCoordinate(
@@ -263,67 +262,79 @@ Widget museumInfoWindow(int museumID) {
     future: ExhibitionService.getExhibitionListByMuseumID(museumID: museumID),
     builder: (context, snapshot) {
       if (snapshot.hasData) {
-        return (Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Portrait(
-              radius: 30.0,
-              imageProvider: NetworkImage(
-                snapshot.data[0].exhibitionImageLink,
-              ),
-            ),
-            Text(
-              snapshot.data[0].museumName,
+        if (snapshot.data.length == 0) {
+          return Center(
+            child: Text(
+              "暂无信息",
               style: TextStyle(
-                color: Colors.teal.shade100,
-                fontSize: ScreenUtil().setSp(20.0),
-                fontWeight: FontWeight.bold,
                 decoration: TextDecoration.none,
+                color: Colors.teal,
               ),
             ),
-            SizedBox(
-              height: ScreenUtil().setHeight(20.0),
-              width: ScreenUtil().setWidth(150.0),
-              child: (Divider(
-                color: Colors.teal.shade100,
-              )),
-            ),
-            Text(
-              snapshot.data[0].exhibitionIntroduction,
-              style: TextStyle(
-                color: Colors.teal.shade100,
-                fontSize: ScreenUtil().setSp(15.0),
-                // fontWeight: FontWeight.bold,
-                decoration: TextDecoration.none,
-              ),
-            ),
-            SizedBox(
-              height: ScreenUtil().setHeight(50.0),
-            ),
-            Column(
-              // mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                FlatButton(
-                  color: Colors.lightBlue,
-                  onPressed: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) =>
-                            MuseumInformation(
-                              museumID: museumID,
-                            ),
-                      ),
-                    );
-                  },
-                  child: Text(
-                    '进入博物馆',
-                  ),
+          );
+        } else {
+          return (Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Portrait(
+                radius: 30.0,
+                imageProvider: NetworkImage(
+                  snapshot.data[0].exhibitionImageLink,
                 ),
-              ],
-            )
-          ],
-        ));
+              ),
+              Text(
+                snapshot.data[0].museumName,
+                style: TextStyle(
+                  color: Colors.teal.shade100,
+                  fontSize: ScreenUtil().setSp(20.0),
+                  fontWeight: FontWeight.bold,
+                  decoration: TextDecoration.none,
+                ),
+              ),
+              SizedBox(
+                height: ScreenUtil().setHeight(20.0),
+                width: ScreenUtil().setWidth(150.0),
+                child: (Divider(
+                  color: Colors.teal.shade100,
+                )),
+              ),
+              Text(
+                snapshot.data[0].exhibitionIntroduction ?? '暂无简介',
+                style: TextStyle(
+                  color: Colors.teal.shade100,
+                  fontSize: ScreenUtil().setSp(15.0),
+                  // fontWeight: FontWeight.bold,
+                  decoration: TextDecoration.none,
+                ),
+              ),
+              SizedBox(
+                height: ScreenUtil().setHeight(50.0),
+              ),
+              Column(
+                // mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  FlatButton(
+                    color: Colors.lightBlue,
+                    onPressed: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) =>
+                              MuseumInformation(
+                                museumID: museumID,
+                              ),
+                        ),
+                      );
+                    },
+                    child: Text(
+                      '进入博物馆',
+                    ),
+                  ),
+                ],
+              )
+            ],
+          ));
+        }
       } else {
         return Center(
           child: CircularProgressIndicator(),

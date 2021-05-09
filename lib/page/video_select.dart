@@ -1,6 +1,7 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:museumguide/models/user.dart';
 import 'package:video_player/video_player.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:video_thumbnail/video_thumbnail.dart';
@@ -9,6 +10,7 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:chewie/chewie.dart';
 import 'package:chewie/src/chewie_player.dart';
+import 'package:museumguide/common/global.dart';
 
 final _firestore = Firestore.instance;
 
@@ -34,8 +36,13 @@ class _VideoSelectPageState extends State<VideoSelectPage> {
   VideoPlayerController _videoPlayerController;
   var thumbnailPath;
 
+  @override
+  void dispose() {
+    super.dispose();
+    _videoPlayerController.dispose();
+  }
+
   _pickVideo() async {
-    username = "swgk";
     PickedFile video = await picker.getVideo(
         source: ImageSource.gallery, maxDuration: const Duration(seconds: 10));
     _video = File(video.path);
@@ -65,6 +72,10 @@ class _VideoSelectPageState extends State<VideoSelectPage> {
 
   Future<void> putFileToStorage(
       File file, String type, String name, String folder) async {
+    String username = '唐伯虎'; //昵称
+    if (Global.user.nickName != null && Global.user.nickName != '') {
+      username = Global.user.nickName;
+    }
     print(type);
     final StorageReference firebaseStorageRef =
         FirebaseStorage.instance.ref().child('$username/$folder/$name');
@@ -77,6 +88,7 @@ class _VideoSelectPageState extends State<VideoSelectPage> {
     print('k3:' + k3.toString());
 
     _firestore.collection('VideoCollection').add({
+      'idNumber': Global.user.IDNumber,
       'username': username,
       'title': title,
       'introduction': introuction,
@@ -87,7 +99,7 @@ class _VideoSelectPageState extends State<VideoSelectPage> {
     k3 = true;
     print('k3:' + k3.toString());
 
-    _firestore.collection('${username}').add({
+    _firestore.collection('${Global.user.IDNumber}').add({
       'title': title,
       'introduction': introuction,
       'url': getURL,
@@ -122,6 +134,10 @@ class _VideoSelectPageState extends State<VideoSelectPage> {
 
   @override
   Widget build(BuildContext context) {
+    String username = '唐伯虎'; //昵称
+    if (Global.user.nickName != null && Global.user.nickName != '') {
+      username = Global.user.nickName;
+    }
     return MaterialApp(
       home: SafeArea(
         child: Scaffold(
@@ -281,9 +297,9 @@ class _VideoSelectPageState extends State<VideoSelectPage> {
                       String type = _video.path
                           .split('/')[_video.path.split('/').length - 1]
                           .split('.')[_video.path
-                              .split('/')[_video.path.split('/').length - 1]
-                              .split('.')
-                              .length -
+                          .split('/')[_video.path.split('/').length - 1]
+                          .split('.')
+                          .length -
                           1];
                       print(type);
                       await FirebaseAuth.instance.signInAnonymously();
@@ -331,3 +347,4 @@ class _VideoSelectPageState extends State<VideoSelectPage> {
     );
   }
 }
+

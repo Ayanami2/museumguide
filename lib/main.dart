@@ -3,10 +3,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_baidu_mapapi_base/flutter_baidu_mapapi_base.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:museumguide/page/comment_page.dart';
+import 'package:museumguide/page/main_login.dart';
 import 'package:museumguide/page/home_page.dart';
 import 'package:museumguide/page/map_page.dart';
+import 'package:museumguide/page/mine/aboutus_page.dart';
 import 'package:museumguide/page/mine/mine_page.dart';
-import 'package:museumguide/page/mine/settings.dart';
+import 'package:museumguide/page/mine/setting_page.dart';
 import 'package:museumguide/page/my_videos.dart';
 import 'package:museumguide/page/video_select.dart';
 
@@ -32,13 +34,17 @@ class MyApp extends StatelessWidget {
       designSize: Size(360, 690),
       allowFontScaling: false,
       builder: () => MaterialApp(title: 'Flutter Demo', routes: {
-        '/': (context) => (HomePage()),
+        '/': (context) => (MainLoginPage()),
+        'home_page': (context) => (HomePage()),
         'comment_page': (context) => (CommentPage()),
         'map_page': (context) => (MapPage()),
         'mine_page': (context) => (MinePage()),
-        'settings_page': (context) => (SettingsPage()),
+        'setting_page': (context) => (SettingPage()),
+        'login_page': (context) => (LoginPage()),
+        'register_page': (context) => (RegisterPage()),
         'video_select_page': (context) => (VideoSelectPage()),
         'my_videos': (context) => (MyVideo()),
+        'about_us': (context) => (AboutusPage()),
       }),
     );
   }

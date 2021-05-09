@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import '../../models/index.dart';
 import '../../service/index.dart';
 import '../../widgets/information/base_information.dart';
-import '../../models/index.dart';
+import '../../widgets/information/exhibition_information.dart';
+import '../../widgets/information/collection_information.dart';
 
 class MuseumInformation extends StatefulWidget {
   final num museumID;
@@ -13,12 +15,10 @@ class MuseumInformation extends StatefulWidget {
   _MuseumInformationState createState() => _MuseumInformationState();
 }
 
-class _MuseumInformationState extends State<MuseumInformation>
-    with SingleTickerProviderStateMixin {
+class _MuseumInformationState extends State<MuseumInformation> {
   MuseumBasicInformation museumBasicInformation;
   List<Exhibition> exhibitionList;
-  num widgetIndex;
-  TabController _tabController;
+  List<Collection> collectionList;
 
   @override
   void initState() {
@@ -27,66 +27,63 @@ class _MuseumInformationState extends State<MuseumInformation>
         .then((value) => setState(() => museumBasicInformation = value));
     ExhibitionService.getExhibitionListByMuseumID(museumID: widget.museumID)
         .then((value) => setState(() => exhibitionList = value));
-    widgetIndex = 0;
-    this._tabController = TabController(length: 3, vsync: this);
+    CollectionService.getCollectionListByMuseumID(museumID: widget.museumID)
+        .then((value) => setState(() => collectionList = value));
   }
-
-  /*Widget getButton(String data, num index) {
-    return GestureDetector(
-      onTap: () => setState(() => widgetIndex = index),
-      child: Text(
-        data,
-        style: TextStyle(fontSize: ScreenUtil().setSp(18.0)),
-      ),
-    );
-  }*/
 
   @override
   Widget build(BuildContext context) {
-    return (museumBasicInformation == null || exhibitionList == null)
-        ? Center(child: CircularProgressIndicator())
-        : Scaffold(
-            appBar: AppBar(
-              elevation: 0.0,
-              title: Text(
-                museumBasicInformation.museumName,
-                style: TextStyle(fontSize: ScreenUtil().setSp(30.0)),
-              ),
-              centerTitle: true,
-            ),
-            body: Container(
-              child: Column(
-                children: [
-                  Container(
-                    color: Colors.teal,
-                    child: TabBar(
-                      controller: _tabController,
-                      tabs: [
-                        Tab(text: "基本信息"),
-                        Tab(text: "展览信息"),
-                        Tab(text: "藏品信息"),
-                      ],
-                    ),
+    if (museumBasicInformation == null ||
+        exhibitionList == null ||
+        collectionList == null) {
+      return Scaffold(
+        body: Center(child: CircularProgressIndicator()),
+      );
+    } else {
+      return Scaffold(
+        appBar: AppBar(
+          title: Text(
+            museumBasicInformation.museumName,
+            textAlign: TextAlign.center,
+            style: TextStyle(fontSize: ScreenUtil().setSp(30.0)),
+          ),
+        ),
+        body: DefaultTabController(
+          length: 3,
+          child: Container(
+            child: Column(
+              children: [
+                Container(
+                  color: Colors.teal,
+                  child: TabBar(
+                    indicatorColor: Colors.red,
+                    tabs: [
+                      Tab(text: "基本信息"),
+                      Tab(text: "展览列表"),
+                      Tab(text: "藏品列表"),
+                    ],
                   ),
-                  Expanded(
-                    child: TabBarView(
-                      controller: _tabController,
-                      children: [
-                        BaseInformation(
-                          museumBaseInformation: museumBasicInformation,
-                        ),
-                        Center(
-                          child: Text('exhibition'),
-                        ),
-                        Center(
-                          child: Text('collection'),
-                        )
-                      ],
-                    ),
+                ),
+                Expanded(
+                  child: TabBarView(
+                    children: [
+                      BaseInformation(
+                        museumBaseInformation: museumBasicInformation,
+                      ),
+                      ExhibitionInformation(
+                        exhibitionList: exhibitionList,
+                      ),
+                      CollectionInformation(
+                        collectionList: collectionList,
+                      )
+                    ],
                   ),
-                ],
-              ),
+                ),
+              ],
             ),
-          );
+          ),
+        ),
+      );
+    }
   }
 }
