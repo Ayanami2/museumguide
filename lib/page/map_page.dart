@@ -1,4 +1,3 @@
-// import 'dart:html';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:museumguide/models/index.dart';
@@ -7,11 +6,14 @@ import 'package:flutter_baidu_mapapi_base/flutter_baidu_mapapi_base.dart';
 import 'package:flutter_baidu_mapapi_map/flutter_baidu_mapapi_map.dart';
 import 'package:flutter_bmflocation/flutter_baidu_location_ios_option.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:flutter_baidu_mapapi_utils/flutter_baidu_mapapi_utils.dart';
+
+// import 'package:flutter_baidu_mapapi_utils/flutter_baidu_mapapi_utils.dart';
 import 'package:flutter_bmflocation/bdmap_location_flutter_plugin.dart';
-import 'package:flutter_bmflocation/flutter_baidu_location.dart';
+
+// import 'package:flutter_bmflocation/flutter_baidu_location.dart';
 import 'package:flutter_bmflocation/flutter_baidu_location_android_option.dart';
 import 'package:museumguide/service/index.dart';
+import 'package:museumguide/page/information/museum_information.dart';
 
 class MapPage extends StatefulWidget {
   @override
@@ -22,16 +24,14 @@ class _MapPageState extends BMFBaseMapState<MapPage> {
   /// 定位模式状态
   bool _showUserLocation = true;
 
-  String _btnText = "关闭";
-
   /// 我的位置
   BMFUserLocation _userLocation;
 
   /// 定位模式
   BMFUserTrackingMode _userTrackingMode = BMFUserTrackingMode.Follow;
 
-  /// 定位点样式
-  BMFUserLocationDisplayParam _displayParam;
+  // /// 定位点样式
+  // BMFUserLocationDisplayParam _displayParam;
 
   ///markerID转museumID
   Map<String, String> maker2museum = {};
@@ -40,13 +40,12 @@ class _MapPageState extends BMFBaseMapState<MapPage> {
     super.onBMFMapCreated(controller);
 
     /// 地图加载回调
-
-    /*if (_showUserLocation) {
+    if (_showUserLocation) {
       myMapController?.showUserLocation(true);
       updateUserLocation();
       myMapController?.setUserTrackingMode(_userTrackingMode);
       // updatUserLocationDisplayParam();
-    }*/
+    }
     BMFCoordinate bmfCoordinate = BMFCoordinate(40.258911, 116.15437);
     addStartMarker(bmfCoordinate);
     bmfCoordinate = BMFCoordinate(39.924091, 116.4034147);
@@ -54,11 +53,11 @@ class _MapPageState extends BMFBaseMapState<MapPage> {
     addMuseums();
 
     myMapController?.setMapClickedMarkerCallback(callback: (BMFMarker marker) {
-      /*print(marker.position.latitude);
+      print(marker.position.latitude);
       print(marker.position.longitude);
       print(marker.Id);
       print(marker.identifier);
-      print(marker.title);*/
+      print(marker.title);
       showDialog(
         context: context,
         builder: (ctx) {
@@ -73,10 +72,10 @@ class _MapPageState extends BMFBaseMapState<MapPage> {
         stream: baiduGps(),
         builder: (context, snapshot) {
           if (snapshot.hasData) {
-            /*print("纬度");
+            print("纬度");
             print(snapshot.data["latitude"]);
             print("经度");
-            print(snapshot.data["longitude"]);*/
+            print(snapshot.data["longitude"]);
             return Container(
               height: screenSize.height,
               width: screenSize.width,
@@ -311,7 +310,14 @@ Widget museumInfoWindow(int museumID) {
                 FlatButton(
                   color: Colors.lightBlue,
                   onPressed: () {
-                    print(1);
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => MuseumInformation(
+                          museumID: museumID,
+                        ),
+                      ),
+                    );
                   },
                   child: Text(
                     '进入博物馆',
