@@ -41,12 +41,12 @@ class _MapPageState extends BMFBaseMapState<MapPage> {
 
     /// 地图加载回调
 
-    if (_showUserLocation) {
+    /*if (_showUserLocation) {
       myMapController?.showUserLocation(true);
       updateUserLocation();
       myMapController?.setUserTrackingMode(_userTrackingMode);
       // updatUserLocationDisplayParam();
-    }
+    }*/
     BMFCoordinate bmfCoordinate = BMFCoordinate(40.258911, 116.15437);
     addStartMarker(bmfCoordinate);
     bmfCoordinate = BMFCoordinate(39.924091, 116.4034147);
@@ -54,11 +54,11 @@ class _MapPageState extends BMFBaseMapState<MapPage> {
     addMuseums();
 
     myMapController?.setMapClickedMarkerCallback(callback: (BMFMarker marker) {
-      print(marker.position.latitude);
+      /*print(marker.position.latitude);
       print(marker.position.longitude);
       print(marker.Id);
       print(marker.identifier);
-      print(marker.title);
+      print(marker.title);*/
       showDialog(
         context: context,
         builder: (ctx) {
@@ -73,10 +73,10 @@ class _MapPageState extends BMFBaseMapState<MapPage> {
         stream: baiduGps(),
         builder: (context, snapshot) {
           if (snapshot.hasData) {
-            print("纬度");
+            /*print("纬度");
             print(snapshot.data["latitude"]);
             print("经度");
-            print(snapshot.data["longitude"]);
+            print(snapshot.data["longitude"]);*/
             return Container(
               height: screenSize.height,
               width: screenSize.width,

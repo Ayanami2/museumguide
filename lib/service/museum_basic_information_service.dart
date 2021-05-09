@@ -23,9 +23,9 @@ class MuseumBasicInformationService {
         await http.post(ServerUrl.MUSEUM_BASIC_INFORMATION_URL, body: {
       "action": "getMuseumList",
     });
-    print(response.body);
+    //print(response.body);
     var list = jsonDecode(response.body);
-    print(list.runtimeType);
+    //print(list.runtimeType);
     List<MuseumBasicInformation> res = [];
     for (var obj in list) {
       res.add(MuseumBasicInformation.fromJson(obj));
@@ -40,7 +40,7 @@ static Future<List<int>> getMuseumIDList() async {
     });
     // print(response.body);
     var list = jsonDecode(response.body);
-    print(list.runtimeType);
+    //print(list.runtimeType);
     List<int> res = [];
     for (var obj in list) {
       res.add(int.parse(obj["museumID"]));
