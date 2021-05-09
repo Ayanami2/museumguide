@@ -1,6 +1,7 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:museumguide/models/user.dart';
 import 'package:video_player/video_player.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:video_thumbnail/video_thumbnail.dart';
@@ -11,8 +12,10 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:chewie/chewie.dart';
 import 'package:chewie/src/chewie_player.dart';
+import 'package:museumguide/common/global.dart';
 
 final _firestore = Firestore.instance;
+
 
 class VideoSelectPage extends StatefulWidget {
   @override
@@ -20,6 +23,7 @@ class VideoSelectPage extends StatefulWidget {
 }
 
 class _VideoSelectPageState extends State<VideoSelectPage> {
+
   final titleTextController = TextEditingController();
   final introductionTextController = TextEditingController();
 
@@ -37,7 +41,7 @@ class _VideoSelectPageState extends State<VideoSelectPage> {
   var thumbnailPath;
 
   _pickVideo() async {
-    username = "swgk";
+
     PickedFile video = await picker.getVideo(
         source: ImageSource.gallery, maxDuration: const Duration(seconds: 10));
     _video = File(video.path);
@@ -67,6 +71,10 @@ class _VideoSelectPageState extends State<VideoSelectPage> {
 
   Future<void> putFileToStorage(
       File file, String type, String name, String folder) async {
+    String username ='唐伯虎';//昵称
+    if(Global.user.nickName!=null&&Global.user.nickName!='') {
+      username=Global.user.nickName;
+    }
     print(type);
     final StorageReference firebaseStorageRef =
     FirebaseStorage.instance.ref().child('$username/$folder/$name');
@@ -79,6 +87,7 @@ class _VideoSelectPageState extends State<VideoSelectPage> {
     print('k3:' + k3.toString());
 
     _firestore.collection('VideoCollection').add({
+      'idNumber': Global.user.IDNumber,
       'username': username,
       'title': title,
       'introduction': introuction,
@@ -89,7 +98,7 @@ class _VideoSelectPageState extends State<VideoSelectPage> {
     k3 = true;
     print('k3:' + k3.toString());
 
-    _firestore.collection('${username}').add({
+    _firestore.collection('${Global.user.IDNumber}').add({
       'title': title,
       'introduction': introuction,
       'url': getURL,
@@ -124,6 +133,10 @@ class _VideoSelectPageState extends State<VideoSelectPage> {
 
   @override
   Widget build(BuildContext context) {
+    String username ='唐伯虎';//昵称
+    if(Global.user.nickName!=null&&Global.user.nickName!='') {
+     username=Global.user.nickName;
+    }
     return MaterialApp(
       home: SafeArea(
         child: Scaffold(
@@ -144,190 +157,188 @@ class _VideoSelectPageState extends State<VideoSelectPage> {
               ),
             ],
           ),
-          body: SingleChildScrollView(
-            child: Column(children: [
-              BOX(),
-              Row(
-                children: [
-                  Expanded(
-                    child: Container(
-                      height: ScreenUtil().setHeight(15),
-                      color: Colors.black45,
-                    ),
-                  )
-                ],
-              ),
-              Row(crossAxisAlignment: CrossAxisAlignment.center, children: [
-                Text(
-                  "标题:",
-                  style: TextStyle(fontSize: 20),
-                ),
+          body: Column(children: [
+            BOX(),
+            Row(
+              children: [
                 Expanded(
-                  child: TextField(
-                    maxLength: 10,
-                    maxLengthEnforced: true,
-                    style: TextStyle(fontSize: 20),
-                    controller: titleTextController,
-                    onChanged: (value) {
-                      title = value;
-                      if (value != null) k1 = true;
-                    },
-                    decoration: InputDecoration(
-                      filled: true,
-                      fillColor: Colors.grey[300],
-                      contentPadding: EdgeInsets.symmetric(
-                          vertical: 10.0, horizontal: 10.0),
-                      hintText: '请填写标题',
-                      border: InputBorder.none,
-                    ),
+                  child: Container(
+                    height: ScreenUtil().setHeight(15),
+                    color: Colors.black45,
                   ),
-                ),
-              ]),
-              Row(
-                children: [
-                  Expanded(
-                    child: Container(
-                      height: ScreenUtil().setHeight(1),
-                      color: Colors.black45,
-                    ),
-                  )
-                ],
+                )
+              ],
+            ),
+            Row(crossAxisAlignment: CrossAxisAlignment.center, children: [
+              Text(
+                "标题:",
+                style: TextStyle(fontSize: 20),
               ),
-              Row(crossAxisAlignment: CrossAxisAlignment.center, children: [
-                Text(
-                  "简介:",
+              Expanded(
+                child: TextField(
+                  maxLength: 10,
+                  maxLengthEnforced: true,
                   style: TextStyle(fontSize: 20),
-                ),
-                Expanded(
-                  child: TextField(
-                    maxLines: 4,
-                    maxLength: 40,
-                    maxLengthEnforced: true,
-                    style: TextStyle(fontSize: 20),
-                    controller: introductionTextController,
-                    onChanged: (value) {
-                      introuction = value;
-                    },
-                    decoration: InputDecoration(
-                      filled: true,
-                      fillColor: Colors.grey[300],
-                      contentPadding: EdgeInsets.symmetric(
-                          vertical: 40.0, horizontal: 10.0),
-                      hintText: '请填简介',
-                      border: InputBorder.none,
-                    ),
-                  ),
-                ),
-              ]),
-              Row(
-                children: [
-                  Expanded(
-                    child: Container(
-                      height: ScreenUtil().setHeight(1),
-                      color: Colors.black45,
-                    ),
-                  )
-                ],
-              ),
-              Container(
-                margin: EdgeInsets.all(15.0),
-                color: Colors.blue,
-                child: FlatButton(
-                  onPressed: () async {
-                    if (_video == null)
-                      showDialog<Null>(
-                        context: context,
-                        barrierDismissible: false,
-                        builder: (BuildContext context) {
-                          return new AlertDialog(
-                            title: new Text('请选择要上传的视频'),
-                            actions: <Widget>[
-                              new FlatButton(
-                                child: new Text(
-                                  '知道了',
-                                  style: TextStyle(color: Colors.pinkAccent),
-                                ),
-                                onPressed: () {
-                                  Navigator.of(context).pop();
-                                },
-                              ),
-                            ],
-                          );
-                        },
-                      );
-                    else if (k1 == false) {
-                      showDialog<Null>(
-                        context: context,
-                        barrierDismissible: false,
-                        builder: (BuildContext context) {
-                          return new AlertDialog(
-                            title: new Text('请填写稿件标题'),
-                            actions: <Widget>[
-                              new FlatButton(
-                                child: new Text(
-                                  '知道了',
-                                  style: TextStyle(color: Colors.pinkAccent),
-                                ),
-                                onPressed: () {
-                                  Navigator.of(context).pop();
-                                },
-                              ),
-                            ],
-                          );
-                        },
-                      );
-                    } else if (_video != null) {
-                      String name = _video.path
-                          .split('/')[_video.path.split('/').length - 1];
-                      print(name);
-                      String type = _video.path
-                          .split('/')[_video.path.split('/').length - 1]
-                          .split('.')[_video.path
-                          .split('/')[_video.path.split('/').length - 1]
-                          .split('.')
-                          .length -
-                          1];
-                      print(type);
-                      await FirebaseAuth.instance.signInAnonymously();
-                      await putFileToStorage(
-                          _video, type, title, 'camera_video');
-                      if (k3)
-                        showDialog<Null>(
-                          context: context,
-                          barrierDismissible: false,
-                          builder: (BuildContext context) {
-                            return AlertDialog(
-                              title: new Text('上传成功'),
-                              actions: <Widget>[
-                                new FlatButton(
-                                  child: new Text(
-                                    '知道了',
-                                    style: TextStyle(color: Colors.pinkAccent),
-                                  ),
-                                  onPressed: () {
-                                    Navigator.of(context)
-                                        .popAndPushNamed('comment_page');
-                                  },
-                                ),
-                              ],
-                            );
-                          },
-                        );
-                    }
-
-                    ///上传视频
-                    ///
+                  controller: titleTextController,
+                  onChanged: (value) {
+                    title = value;
+                    if (value != null) k1 = true;
                   },
-                  child: Text(
-                    "发布",
-                    style: TextStyle(
-                      fontSize: 40,
-                    ),
+                  decoration: InputDecoration(
+                    filled: true,
+                    fillColor: Colors.grey[300],
+                    contentPadding: EdgeInsets.symmetric(
+                        vertical: 10.0, horizontal: 10.0),
+                    hintText: '请填写标题',
+                    border: InputBorder.none,
                   ),
                 ),
               ),
             ]),
-          ),
+            Row(
+              children: [
+                Expanded(
+                  child: Container(
+                    height: ScreenUtil().setHeight(1),
+                    color: Colors.black45,
+                  ),
+                )
+              ],
+            ),
+            Row(crossAxisAlignment: CrossAxisAlignment.center, children: [
+              Text(
+                "简介:",
+                style: TextStyle(fontSize: 20),
+              ),
+              Expanded(
+                child: TextField(
+                  maxLines: 4,
+                  maxLength: 40,
+                  maxLengthEnforced: true,
+                  style: TextStyle(fontSize: 20),
+                  controller: introductionTextController,
+                  onChanged: (value) {
+                    introuction = value;
+                  },
+                  decoration: InputDecoration(
+                    filled: true,
+                    fillColor: Colors.grey[300],
+                    contentPadding: EdgeInsets.symmetric(
+                        vertical: 40.0, horizontal: 10.0),
+                    hintText: '请填简介',
+                    border: InputBorder.none,
+                  ),
+                ),
+              ),
+            ]),
+            Row(
+              children: [
+                Expanded(
+                  child: Container(
+                    height: ScreenUtil().setHeight(1),
+                    color: Colors.black45,
+                  ),
+                )
+              ],
+            ),
+            Container(
+              margin: EdgeInsets.all(15.0),
+              color: Colors.blue,
+              child: FlatButton(
+                onPressed: () async {
+                  if (_video == null)
+                    showDialog<Null>(
+                      context: context,
+                      barrierDismissible: false,
+                      builder: (BuildContext context) {
+                        return new AlertDialog(
+                          title: new Text('请选择要上传的视频'),
+                          actions: <Widget>[
+                            new FlatButton(
+                              child: new Text(
+                                '知道了',
+                                style: TextStyle(color: Colors.pinkAccent),
+                              ),
+                              onPressed: () {
+                                Navigator.of(context).pop();
+                              },
+                            ),
+                          ],
+                        );
+                      },
+                    );
+                  else if (k1 == false) {
+                    showDialog<Null>(
+                      context: context,
+                      barrierDismissible: false,
+                      builder: (BuildContext context) {
+                        return new AlertDialog(
+                          title: new Text('请填写稿件标题'),
+                          actions: <Widget>[
+                            new FlatButton(
+                              child: new Text(
+                                '知道了',
+                                style: TextStyle(color: Colors.pinkAccent),
+                              ),
+                              onPressed: () {
+                                Navigator.of(context).pop();
+                              },
+                            ),
+                          ],
+                        );
+                      },
+                    );
+                  } else if (_video != null) {
+                    String name = _video.path
+                        .split('/')[_video.path.split('/').length - 1];
+                    print(name);
+                    String type = _video.path
+                        .split('/')[_video.path.split('/').length - 1]
+                        .split('.')[_video.path
+                        .split('/')[_video.path.split('/').length - 1]
+                        .split('.')
+                        .length -
+                        1];
+                    print(type);
+                    await FirebaseAuth.instance.signInAnonymously();
+                    await putFileToStorage(
+                        _video, type, title, 'camera_video');
+                    if (k3)
+                      showDialog<Null>(
+                        context: context,
+                        barrierDismissible: false,
+                        builder: (BuildContext context) {
+                          return AlertDialog(
+                            title: new Text('上传成功'),
+                            actions: <Widget>[
+                              new FlatButton(
+                                child: new Text(
+                                  '知道了',
+                                  style: TextStyle(color: Colors.pinkAccent),
+                                ),
+                                onPressed: () {
+                                  Navigator.of(context)
+                                      .popAndPushNamed('comment_page');
+                                },
+                              ),
+                            ],
+                          );
+                        },
+                      );
+                  }
+
+                  ///上传视频
+                  ///
+                },
+                child: Text(
+                  "发布",
+                  style: TextStyle(
+                    fontSize: 40,
+                  ),
+                ),
+              ),
+            ),
+          ]),
         ),
       ),
     );

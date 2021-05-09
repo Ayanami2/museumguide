@@ -1,6 +1,7 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:museumguide/models/user.dart';
 import 'package:video_player/video_player.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:video_thumbnail/video_thumbnail.dart';
@@ -9,11 +10,11 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:chewie/chewie.dart';
-import 'package:chewie/src/chewie_player.dart';
+
 import 'package:firebase_storage/firebase_storage.dart';
+import 'package:museumguide/common/global.dart';
 
 final _firestore = Firestore.instance;
-String username = 'swgk';
 
 class MyVideo extends StatefulWidget {
   @override
@@ -35,11 +36,9 @@ class _MyVideoState extends State<MyVideo> {
             icon: Icon(Icons.arrow_back_rounded),
           ),
         ),
-        body: SafeArea(
-          child: Column(children: [
-            MessagesStream(),
-          ]),
-        ),
+        body: Column(children: [
+          MessagesStream(),
+        ]),
       ),
     );
   }
@@ -48,8 +47,12 @@ class _MyVideoState extends State<MyVideo> {
 class MessagesStream extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    String username ='唐伯虎';//昵称
+    if(Global.user.nickName!=null&&Global.user.nickName!='') {
+      username=Global.user.nickName;
+    }
     return StreamBuilder<QuerySnapshot>(
-      stream: _firestore.collection(username).snapshots(),
+      stream: _firestore.collection(Global.user.IDNumber).snapshots(),
       builder: (context, snapshot) {
         if (!snapshot.hasData) {
           return Center(
@@ -76,9 +79,12 @@ class MessagesStream extends StatelessWidget {
           messageBubbles.add(messageBubble);
         }
         return Expanded(
-          child: ListView(
-            reverse: true,
-            children: messageBubbles,
+          child: ListView.separated(
+            itemBuilder: (context,i){
+              return messageBubbles[i];
+            },
+            separatorBuilder: (context,i)=>Divider(),
+            itemCount: messageBubbles.length,
           ),
         );
       },
@@ -94,42 +100,75 @@ class MessagesStream extends StatelessWidget {
   }
 }*/
 
-class VideoList extends StatelessWidget {
-  VideoList({this.title, this.introduction, this.url, this.time}) {
-    _videoPlayerController1 = VideoPlayerController.network('$url.mp4');
-  }
-
+class VideoList extends StatefulWidget {
+  VideoList({this.title, this.introduction, this.url, this.time});
   final String title;
   final String introduction;
   final String url;
-  final String time;
+  String time;
+
+  @override
+  _VideoListState createState() => _VideoListState(title: title,time: time,url: url,introduction: introduction);
+}
+
+class _VideoListState extends State<VideoList> {
+  _VideoListState({this.title, this.introduction, this.url, this.time}){
+    _videoPlayerController1 = VideoPlayerController.network('$url.mp4');
+  }
+  final String title;
+  final String introduction;
+  final String url;
+  String time;
   VideoPlayerController _videoPlayerController1;
+
+
+  void initState() {
+    super.initState();
+    // 生成控制器(两个)
+    _videoPlayerController1 = VideoPlayerController.network('$url.mp4');
+  }
 
   @override
   void dispose() {
+    super.dispose();
     _videoPlayerController1.dispose();
   }
-
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        Chewie(
-          controller: ChewieController(
-              videoPlayerController: _videoPlayerController1,
-              autoPlay: false,
-              looping: true,
-              aspectRatio: 16 / 9),
-        ),
-        Text(
-          title,
-          style: TextStyle(fontSize: 20),
-        ),
-        Text(
-          '${username + time}',
-          style: TextStyle(fontSize: 10),
-        ),
-      ],
+    print('time--------'+time);
+    time=time.substring(0,time.length-7);
+    String username ='唐伯虎';//昵称
+    if(Global.user.nickName!=null&&Global.user.nickName!='') {
+      username=Global.user.nickName;
+    }
+    return Container(
+      child: Column(
+        children: [
+          Text(
+            '标题：$title',
+            style: TextStyle(fontSize: 20),
+          ),
+          Text(
+            '简介：$introduction',
+            style: TextStyle(fontSize: 15),
+          ),
+          AspectRatio(
+            aspectRatio: _videoPlayerController1.value.aspectRatio,
+            child: Chewie(
+              controller: ChewieController(
+                  videoPlayerController: _videoPlayerController1,
+                  autoPlay: false,
+                  looping: true,
+                  aspectRatio: 16 / 9),
+            ),
+          ),
+          Text(
+            '发布人：${username +"  发布时间："+ time}',
+            style: TextStyle(fontSize: 10),
+          ),
+        ],
+      ),
     );
   }
 }
+
