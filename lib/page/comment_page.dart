@@ -1,11 +1,4 @@
 import 'package:flutter/material.dart';
-
-//以下为百度地图插件需要引用的库
-import 'package:flutter_bmflocation/bdmap_location_flutter_plugin.dart';
-import 'package:flutter_bmflocation/flutter_baidu_location.dart';
-import 'package:flutter_bmflocation/flutter_baidu_location_android_option.dart';
-import 'package:flutter_bmflocation/flutter_baidu_location_ios_option.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:chewie/chewie.dart';
 import 'package:chewie/src/chewie_player.dart';

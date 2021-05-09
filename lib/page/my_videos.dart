@@ -1,16 +1,8 @@
-import 'dart:io';
 import 'package:flutter/material.dart';
-import 'package:image_picker/image_picker.dart';
 import 'package:video_player/video_player.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:video_thumbnail/video_thumbnail.dart';
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_core/firebase_core.dart';
-import 'package:firebase_storage/firebase_storage.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:chewie/chewie.dart';
 import 'package:chewie/src/chewie_player.dart';
-import 'package:firebase_storage/firebase_storage.dart';
 
 final _firestore = Firestore.instance;
 String username = 'swgk';

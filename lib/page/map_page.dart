@@ -6,11 +6,7 @@ import 'package:flutter_baidu_mapapi_base/flutter_baidu_mapapi_base.dart';
 import 'package:flutter_baidu_mapapi_map/flutter_baidu_mapapi_map.dart';
 import 'package:flutter_bmflocation/flutter_baidu_location_ios_option.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-
-// import 'package:flutter_baidu_mapapi_utils/flutter_baidu_mapapi_utils.dart';
 import 'package:flutter_bmflocation/bdmap_location_flutter_plugin.dart';
-
-// import 'package:flutter_bmflocation/flutter_baidu_location.dart';
 import 'package:flutter_bmflocation/flutter_baidu_location_android_option.dart';
 import 'package:museumguide/service/index.dart';
 import 'package:museumguide/page/information/museum_information.dart';
@@ -89,7 +85,7 @@ class _MapPageState extends BMFBaseMapState<MapPage> {
                       snapshot.data["latitude"], snapshot.data["longitude"]),
                   zoomLevel: 18,
                   maxZoomLevel: 18,
-                  minZoomLevel: 8,
+                  minZoomLevel: 4,
                   mapPadding:
                       BMFEdgeInsets(top: 0, left: 50, right: 50, bottom: 0),
                 ),
@@ -273,11 +269,11 @@ Widget museumInfoWindow(int museumID) {
             Portrait(
               radius: 30.0,
               imageProvider: NetworkImage(
-                'https://ss0.bdstatic.com/70cFuHSh_Q1YnxGkpoWK1HF6hhy/it/u=2846913929,4125395355&fm=26&gp=0.jpg',
+                snapshot.data[0].exhibitionImageLink,
               ),
             ),
             Text(
-              '博物馆', //snapshot.data[0].museumName,
+              snapshot.data[0].museumName,
               style: TextStyle(
                 color: Colors.teal.shade100,
                 fontSize: ScreenUtil().setSp(20.0),
@@ -293,8 +289,7 @@ Widget museumInfoWindow(int museumID) {
               )),
             ),
             Text(
-              'exhibitionIntroduction',
-              //snapshot.data[0].exhibitionIntroduction,
+              snapshot.data[0].exhibitionIntroduction,
               style: TextStyle(
                 color: Colors.teal.shade100,
                 fontSize: ScreenUtil().setSp(15.0),
@@ -323,15 +318,6 @@ Widget museumInfoWindow(int museumID) {
                   },
                   child: Text(
                     '进入博物馆',
-                  ),
-                ),
-                FlatButton(
-                  color: Colors.lightBlue,
-                  onPressed: () {
-                    print(2);
-                  },
-                  child: Text(
-                    '进入视频讲解',
                   ),
                 ),
               ],

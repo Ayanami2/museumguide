@@ -4,6 +4,24 @@ import 'package:http/http.dart' as http;
 import 'dart:convert';
 
 class UserService {
+  static Future<bool> isUserExist({
+    String searchedIDNumber,
+  }) async {
+    final response = await http.post(
+      ServerUrl.USER_URL,
+      body: {
+        "action": "isUserExist",
+        "IDNumber": searchedIDNumber,
+      },
+    );
+    print(response.body);
+    if (response.body == "true") {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
   static Future<User> getUserByAccountNumber({
     num accountNumber,
   }) async {
@@ -29,10 +47,12 @@ class UserService {
         "nickName": insertedUser.nickName ?? "none",
         "IDNumber": insertedUser.IDNumber,
         "name": insertedUser.name ?? "none",
+        "permission": insertedUser.permission ?? 0.toString(),
         "accountNumber": insertedUser.accountNumber.toString(),
         "password": insertedUser.password ?? "none",
         "phoneNumber": insertedUser.phoneNumber ?? "none",
         "email": insertedUser.email ?? "none",
+        "state": insertedUser.state ?? 1.toString(),
       },
     );
     print(response.body);

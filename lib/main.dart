@@ -8,22 +8,10 @@ import 'package:museumguide/page/map_page.dart';
 import 'package:museumguide/page/mine/mine_page.dart';
 import 'package:museumguide/page/mine/settings.dart';
 import 'package:museumguide/page/my_videos.dart';
-import 'package:museumguide/service/index.dart';
-import 'package:museumguide/models/index.dart';
-import 'package:http/http.dart' as http;
-import 'package:museumguide/config/index.dart';
 import 'package:museumguide/page/video_select.dart';
 
 void main() async {
-  // User u = await UserService.getUserByAccountNumber(accountNumber: 100010);
-  // print(u.nickName);
-  // User u1 = new User()
-  //   ..name = "lcynb"
-  //   ..password = "password"
-  //   ..accountNumber = 100165675
-  //   ..IDNumber = "360102255591987569";
-  // UserService.insertUser(insertedUser: u1);
-  // UserService.updatePassword(accountNumber: 100165675,password: "lcynb");
+  // print(UserService.isUserExist(searchedIDNumber: "532301154091545872").toString());
 
   if (Platform.isIOS) {
     BMFMapSDK.setApiKeyAndCoordType(
