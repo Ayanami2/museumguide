@@ -120,6 +120,13 @@ packages:
       url: "http://pub.flutter-io.cn"
     source: hosted
     version: "1.0.4"
+  chewie:
+    dependency: "direct main"
+    description:
+      name: chewie
+      url: "http://pub.flutter-io.cn"
+    source: hosted
+    version: "0.10.0"
   clock:
     dependency: transitive
     description:
@@ -127,6 +134,13 @@ packages:
       url: "http://pub.flutter-io.cn"
     source: hosted
     version: "1.1.0-nullsafety.1"
+  cloud_firestore:
+    dependency: "direct main"
+    description:
+      name: cloud_firestore
+      url: "http://pub.flutter-io.cn"
+    source: hosted
+    version: "0.10.1"
   code_builder:
     dependency: transitive
     description:
@@ -511,6 +525,13 @@ packages:
       url: "http://pub.flutter-io.cn"
     source: hosted
     version: "0.3.0"
+  open_iconic_flutter:
+    dependency: transitive
+    description:
+      name: open_iconic_flutter
+      url: "http://pub.flutter-io.cn"
+    source: hosted
+    version: "0.3.0"
   package_config:
     dependency: transitive
     description:
@@ -803,6 +824,13 @@ packages:
       url: "http://pub.flutter-io.cn"
     source: hosted
     version: "0.2.5"
+  wakelock:
+    dependency: transitive
+    description:
+      name: wakelock
+      url: "http://pub.flutter-io.cn"
+    source: hosted
+    version: "0.1.4+2"
   watcher:
     dependency: transitive
     description:
