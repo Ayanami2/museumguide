@@ -4,7 +4,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
-
 class AboutusPage extends StatefulWidget {
   @override
   _AboutusPageState createState() => _AboutusPageState();
@@ -26,6 +25,7 @@ class _AboutusPageState extends State<AboutusPage> {
       ),
     );
   }
+
   buildBody() {
     return Stack(
       alignment: Alignment.center,
@@ -43,7 +43,7 @@ class _AboutusPageState extends State<AboutusPage> {
         ),
         Positioned(
           top: 400,
-            child:Text(
+          child: Text(
             '开发人员：肖开源、刘季平、石炜刚、王雨浓',
             style: TextStyle(
               fontSize: 15,
@@ -51,10 +51,10 @@ class _AboutusPageState extends State<AboutusPage> {
               color: Colors.black54,
             ),
           ),
-          ),
+        ),
         Positioned(
           top: 470,
-          child:Text(
+          child: Text(
             '特别鸣谢：卢晨宇、赵清宇',
             style: TextStyle(
               fontSize: 15,
@@ -65,7 +65,7 @@ class _AboutusPageState extends State<AboutusPage> {
         ),
         Positioned(
           top: 160,
-          child:Text(
+          child: Text(
             '博物馆导览子系统',
             style: TextStyle(
               fontSize: 30,

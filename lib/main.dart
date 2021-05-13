@@ -10,15 +10,12 @@ import 'package:museumguide/page/mine/aboutus_page.dart';
 import 'package:museumguide/page/mine/mine_page.dart';
 import 'package:museumguide/page/mine/setting_page.dart';
 import 'package:museumguide/page/my_videos.dart';
-import 'package:museumguide/service/index.dart';
-import 'package:museumguide/models/index.dart';
-import 'package:http/http.dart' as http;
-import 'package:museumguide/config/index.dart';
 import 'package:museumguide/page/video_select.dart';
+import 'package:museumguide/service/index.dart';
+import 'package:museumguide/service/video_service.dart';
+import 'package:museumguide/models/index.dart';
 
 void main() async {
-  // print(UserService.isUserExist(searchedIDNumber: "532301154091545872").toString());
-
   if (Platform.isIOS) {
     BMFMapSDK.setApiKeyAndCoordType(
         '请输入百度开放平台申请的iOS端API KEY', BMF_COORD_TYPE.BD09LL);

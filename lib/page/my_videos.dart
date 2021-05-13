@@ -1,16 +1,10 @@
-import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:museumguide/models/user.dart';
 import 'package:video_player/video_player.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:video_thumbnail/video_thumbnail.dart';
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_core/firebase_core.dart';
-import 'package:firebase_storage/firebase_storage.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:chewie/chewie.dart';
-
+import 'package:chewie/src/chewie_player.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:museumguide/common/global.dart';
 
@@ -47,9 +41,9 @@ class _MyVideoState extends State<MyVideo> {
 class MessagesStream extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    String username ='唐伯虎';//昵称
-    if(Global.user.nickName!=null&&Global.user.nickName!='') {
-      username=Global.user.nickName;
+    String username = '唐伯虎'; //昵称
+    if (Global.user.nickName != null && Global.user.nickName != '') {
+      username = Global.user.nickName;
     }
     return StreamBuilder<QuerySnapshot>(
       stream: _firestore.collection(Global.user.IDNumber).snapshots(),
@@ -80,10 +74,10 @@ class MessagesStream extends StatelessWidget {
         }
         return Expanded(
           child: ListView.separated(
-            itemBuilder: (context,i){
+            itemBuilder: (context, i) {
               return messageBubbles[i];
             },
-            separatorBuilder: (context,i)=>Divider(),
+            separatorBuilder: (context, i) => Divider(),
             itemCount: messageBubbles.length,
           ),
         );
@@ -102,17 +96,21 @@ class MessagesStream extends StatelessWidget {
 
 class VideoList extends StatefulWidget {
   VideoList({this.title, this.introduction, this.url, this.time});
+
   final String title;
   final String introduction;
   final String url;
   String time;
 
   @override
-  _VideoListState createState() => _VideoListState(title: title,time: time,url: url,introduction: introduction);
+  _VideoListState createState() =>
+      _VideoListState(
+          title: title, time: time, url: url, introduction: introduction);
 }
 
 class _VideoListState extends State<VideoList> {
   _VideoListState({this.title, this.introduction, this.url, this.time});
+
   final String title;
   final String introduction;
   final String url;
@@ -125,7 +123,7 @@ class _VideoListState extends State<VideoList> {
     // 生成控制器(两个)
     _videoPlayerController1 = VideoPlayerController.network('$url.mp4');
     _videoPlayerController1.initialize();
-    _chewieController=ChewieController(
+    _chewieController = ChewieController(
         videoPlayerController: _videoPlayerController1,
         autoPlay: false,
         looping: true,
@@ -138,13 +136,14 @@ class _VideoListState extends State<VideoList> {
     _videoPlayerController1.dispose();
     _chewieController.dispose();
   }
+
   @override
   Widget build(BuildContext context) {
-    print('time--------'+time);
-    time=time.substring(0,time.length-7);
-    String username ='唐伯虎';//昵称
-    if(Global.user.nickName!=null&&Global.user.nickName!='') {
-      username=Global.user.nickName;
+    print('time--------' + time);
+    time = time.substring(0, time.length - 7);
+    String username = '唐伯虎'; //昵称
+    if (Global.user.nickName != null && Global.user.nickName != '') {
+      username = Global.user.nickName;
     }
     return Container(
       child: Column(
@@ -164,7 +163,7 @@ class _VideoListState extends State<VideoList> {
             ),
           ),
           Text(
-            '发布人：${username +"  发布时间："+ time}',
+            '发布人：${username + "  发布时间：" + time}',
             style: TextStyle(fontSize: 10),
           ),
         ],
@@ -172,4 +171,3 @@ class _VideoListState extends State<VideoList> {
     );
   }
 }
-

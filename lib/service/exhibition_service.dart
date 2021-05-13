@@ -14,7 +14,7 @@ class ExhibitionService {
         "exhibitionID": exhibitionID.toString(),
       },
     );
-    print(response.body);
+    //print(response.body);
     return Exhibition.fromJson(jsonDecode(response.body));
   }
 

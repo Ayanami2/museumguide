@@ -1,11 +1,4 @@
 import 'package:flutter/material.dart';
-
-//以下为百度地图插件需要引用的库
-import 'package:flutter_bmflocation/bdmap_location_flutter_plugin.dart';
-import 'package:flutter_bmflocation/flutter_baidu_location.dart';
-import 'package:flutter_bmflocation/flutter_baidu_location_android_option.dart';
-import 'package:flutter_bmflocation/flutter_baidu_location_ios_option.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:chewie/chewie.dart';
 import 'package:chewie/src/chewie_player.dart';
@@ -91,11 +84,11 @@ class MessagesStream extends StatelessWidget {
         return Expanded(
           child: Container(
             child: ListView.separated(
-             // reverse: true,
-              itemBuilder: (context,i){
+              // reverse: true,
+              itemBuilder: (context, i) {
                 return messageBubbles[i];
               },
-              separatorBuilder: (context,i)=>Divider(),
+              separatorBuilder: (context, i) => Divider(),
               itemCount: messageBubbles.length,
             ),
           ),
@@ -106,7 +99,8 @@ class MessagesStream extends StatelessWidget {
 }
 
 class VideoList extends StatefulWidget {
-  VideoList({this.title, this.introduction, this.url, this.time,this.name});
+  VideoList({this.title, this.introduction, this.url, this.time, this.name});
+
   final String title;
   final String introduction;
   final String url;
@@ -114,11 +108,18 @@ class VideoList extends StatefulWidget {
   String name;
 
   @override
-  _VideoListState createState() => _VideoListState(title: title,time: time,url: url,introduction: introduction,name: name);
+  _VideoListState createState() => _VideoListState(
+      title: title,
+      time: time,
+      url: url,
+      introduction: introduction,
+      name: name);
 }
 
 class _VideoListState extends State<VideoList> {
-  _VideoListState({this.title, this.introduction, this.url, this.time,this.name});
+  _VideoListState(
+      {this.title, this.introduction, this.url, this.time, this.name});
+
   final String title;
   final String introduction;
   final String url;
@@ -145,13 +146,14 @@ class _VideoListState extends State<VideoList> {
     _videoPlayerController1.dispose();
     _chewieController.dispose();
   }
+
   @override
   Widget build(BuildContext context) {
-    print('time--------'+time);
-    time=time.substring(0,time.length-7);
-    String username ='唐伯虎';//昵称
-    if(Global.user.nickName!=null&&Global.user.nickName!='') {
-      username=Global.user.nickName;
+    print('time--------' + time);
+    time = time.substring(0, time.length - 7);
+    String username = '唐伯虎'; //昵称
+    if (Global.user.nickName != null && Global.user.nickName != '') {
+      username = Global.user.nickName;
     }
     return Container(
       child: Column(
@@ -171,7 +173,7 @@ class _VideoListState extends State<VideoList> {
             ),
           ),
           Text(
-            '发布人：${name +"  发布时间："+ time}',
+            '发布人：${name + "  发布时间：" + time}',
             style: TextStyle(fontSize: 10),
           ),
         ],
@@ -179,4 +181,3 @@ class _VideoListState extends State<VideoList> {
     );
   }
 }
-

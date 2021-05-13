@@ -4,11 +4,9 @@ part 'user.g.dart';
 
 @JsonSerializable()
 class User {
-  User();
+    User();
 
   String nickName;
-
-  // ignore: non_constant_identifier_names
   String IDNumber;
   String name;
   num permission;

@@ -1,5 +1,5 @@
 class ServerUrl {
-  // static const String BASE_URL = "http://bucttalk.online";
+  // static const String BASE_URL = "http://bucttalk.online/folder";
 
   static const String BASE_URL = "http://120.26.86.149";
   static const String MUSEUM_BASIC_INFORMATION_URL =
@@ -7,4 +7,5 @@ class ServerUrl {
   static const String EXHIBITION_URL = BASE_URL + "/exhibition.php";
   static const String COLLECTION_URL = BASE_URL + "/collection.php";
   static const String USER_URL = BASE_URL + "/user.php";
+  static const String VIDEO_URL = BASE_URL + "/video.php";
 }

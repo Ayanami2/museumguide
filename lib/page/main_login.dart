@@ -88,7 +88,7 @@ class _MainLoginPageState extends State<MainLoginPage> {
             height: 54,
             alignment: Alignment.center,
           ),
-          materialTapTargetSize:MaterialTapTargetSize.shrinkWrap,
+          materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
           onPressed: () {
             Navigator.pushNamed(context, 'register_page');
           },
@@ -140,7 +140,7 @@ class _MainLoginPageState extends State<MainLoginPage> {
             height: 54,
             alignment: Alignment.center,
           ),
-          materialTapTargetSize:MaterialTapTargetSize.shrinkWrap,
+          materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
           onPressed: () {
             Navigator.pushNamed(context, 'login_page');
           },
@@ -288,45 +288,50 @@ class RegisterPageState extends State<RegisterPage> {
           builder: (context) => AlertDialog(
                 title: Text('账号格式不对'),
               ));
-    } else if(accountNumberController.text.length>0){
+    } else if(accountNumberController.text.length>0) {
       bool isExist = await UserService.isUserExist(
-          searchedIDNumber: IDNumberController.text);
+          searchedAccountNumber: accountNumberController.text);
       if (isExist == false) {
-        UserService.insertUser(
-            insertedUser: User()
-              ..accountNumber = int.parse(accountNumberController.text)
-              ..password = passwordController.text
-              ..nickName = nickNameController.text
-              ..IDNumber = IDNumberController.text
-              ..name = nameController.text
-              ..phoneNumber = phoneNumberController.text
-              ..email = emailController.text);
+        if (passwordController.text.length == 0) {
         showDialog(
             context: context,
             builder: (context) => AlertDialog(
-              title: Text('注册成功'),
+              title: Text('请填写密码'),
             ));
-        onTextClear();
+        } else if (IDNumberController.text.length != 18) {
+        showDialog(
+            context: context,
+            builder: (context) => AlertDialog(
+              title: Text('身份证号格式不对'),
+            ));
+        IDNumberController.clear();
+        }
+        else {
+          UserService.insertUser(
+              insertedUser: User()
+                ..accountNumber = int.parse(accountNumberController.text)
+                ..password = passwordController.text
+                ..nickName = nickNameController.text
+                ..IDNumber = IDNumberController.text
+                ..name = nameController.text
+                ..phoneNumber = phoneNumberController.text
+                ..email = emailController.text);
+          showDialog(
+              context: context,
+              builder: (context) =>
+                  AlertDialog(
+                    title: Text('注册成功'),
+                  ));
+          onTextClear();
+        }
       } else {
         showDialog(
             context: context,
             builder: (context) => AlertDialog(
-              title: Text("该身份证已被注册"),
+              title: Text("该账号已被注册"),
             ));
-        onTextClear();
+        accountNumberController.clear();
       }
-    }else if (passwordController.text.length == 0) {
-      showDialog(
-          context: context,
-          builder: (context) => AlertDialog(
-                title: Text('请填写密码'),
-              ));
-    } else if (IDNumberController.text.length != 18) {
-      showDialog(
-          context: context,
-          builder: (context) => AlertDialog(
-                title: Text('身份证号格式不对'),
-              ));
     }
   }
 

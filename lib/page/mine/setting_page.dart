@@ -13,10 +13,13 @@ class SettingPage extends StatefulWidget {
 }
 
 class SettingPageState extends State<SettingPage> {
+
   //旧密码的控制器
   TextEditingController lastpasswordController = TextEditingController();
+
   //新密码的控制器
   TextEditingController newpasswordController = TextEditingController();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -70,17 +73,16 @@ class SettingPageState extends State<SettingPage> {
           builder: (context) => AlertDialog(
             title: Text('请填写旧密码'),
           ));
-    }else if(lastpasswordController.text.length > 0){
+    }else if(lastpasswordController.text.length > 0) {
       User user = Global.user;
       if (user == null || user.password != lastpasswordController.text) {
         showDialog(
             context: context,
             builder: (context) => AlertDialog(
-              title: Text('密码错误'),
-            ));
+                  title: Text('密码错误'),
+                ));
         onTextClear();
-      }
-    else if (newpasswordController.text.length == 0) {
+      }else if (newpasswordController.text.length == 0) {
       showDialog(
           context: context,
           builder: (context) => AlertDialog(

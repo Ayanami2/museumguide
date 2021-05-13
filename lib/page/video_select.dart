@@ -5,9 +5,7 @@ import 'package:museumguide/models/user.dart';
 import 'package:video_player/video_player.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:video_thumbnail/video_thumbnail.dart';
-import 'package:museumguide/utils/image_util.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:chewie/chewie.dart';
@@ -16,14 +14,12 @@ import 'package:museumguide/common/global.dart';
 
 final _firestore = Firestore.instance;
 
-
 class VideoSelectPage extends StatefulWidget {
   @override
   _VideoSelectPageState createState() => _VideoSelectPageState();
 }
 
 class _VideoSelectPageState extends State<VideoSelectPage> {
-
   final titleTextController = TextEditingController();
   final introductionTextController = TextEditingController();
 
@@ -47,7 +43,6 @@ class _VideoSelectPageState extends State<VideoSelectPage> {
   }
 
   _pickVideo() async {
-
     PickedFile video = await picker.getVideo(
         source: ImageSource.gallery, maxDuration: const Duration(seconds: 10));
     _video = File(video.path);
@@ -77,13 +72,13 @@ class _VideoSelectPageState extends State<VideoSelectPage> {
 
   Future<void> putFileToStorage(
       File file, String type, String name, String folder) async {
-    String username ='唐伯虎';//昵称
-    if(Global.user.nickName!=null&&Global.user.nickName!='') {
-      username=Global.user.nickName;
+    String username = '唐伯虎'; //昵称
+    if (Global.user.nickName != null && Global.user.nickName != '') {
+      username = Global.user.nickName;
     }
     print(type);
     final StorageReference firebaseStorageRef =
-    FirebaseStorage.instance.ref().child('$username/$folder/$name');
+        FirebaseStorage.instance.ref().child('$username/$folder/$name');
     final StorageUploadTask task = firebaseStorageRef.putFile(file);
     await task.onComplete;
     getURL = await firebaseStorageRef.getDownloadURL();
@@ -139,9 +134,9 @@ class _VideoSelectPageState extends State<VideoSelectPage> {
 
   @override
   Widget build(BuildContext context) {
-    String username ='唐伯虎';//昵称
-    if(Global.user.nickName!=null&&Global.user.nickName!='') {
-     username=Global.user.nickName;
+    String username = '唐伯虎'; //昵称
+    if (Global.user.nickName != null && Global.user.nickName != '') {
+      username = Global.user.nickName;
     }
     return MaterialApp(
       home: SafeArea(

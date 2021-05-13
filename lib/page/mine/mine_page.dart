@@ -11,15 +11,12 @@ class MinePage extends StatefulWidget {
 }
 
 class _MinePageState extends State<MinePage> {
-
-
-
   @override
   Widget build(BuildContext context) {
-    String nickname ='唐伯虎';//昵称
-    if(Global.user.nickName!=null&&Global.user.nickName!='') {
-        nickname=Global.user.nickName;
-      }
+    String nickname = '唐伯虎'; //昵称
+    if (Global.user.nickName != null && Global.user.nickName != '') {
+      nickname = Global.user.nickName;
+    }
     String portrait =
         'https://ss0.bdstatic.com/70cFuHSh_Q1YnxGkpoWK1HF6hhy/it/u=2846913929,4125395355&fm=26&gp=0.jpg'; //我的头像
     return Scaffold(
@@ -78,8 +75,8 @@ class _MinePageState extends State<MinePage> {
                 height: ScreenUtil().setHeight(1.0),
                 color: Color(0xffd3d3d3),
               ),
-              IconTextArrowWidget(
-                  KIcon.ABOUT_US, KString.ABOUT_US, Colors.teal, () {
+              IconTextArrowWidget(KIcon.ABOUT_US, KString.ABOUT_US, Colors.teal,
+                  () {
                 Navigator.pushNamed(context, 'about_us');
               }),
               Divider(
