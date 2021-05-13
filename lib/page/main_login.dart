@@ -172,75 +172,99 @@ class RegisterPageState extends State<RegisterPage> {
       ),
       body: ListView(
         children: <Widget>[
-          TextField(
-            controller: accountNumberController,
-            keyboardType: TextInputType.number,
-            decoration: InputDecoration(
-              contentPadding: EdgeInsets.all(10.0),
-              icon: Icon(Icons.account_box_outlined),
-              labelText: '请输入你想要注册的账号（最多11位）',
-            ),
-            autofocus: false,
-          ),
-          TextField(
-              controller: passwordController,
-              keyboardType: TextInputType.name,
+          Container(
+            child: TextField(
+              controller: accountNumberController,
+              keyboardType: TextInputType.number,
               decoration: InputDecoration(
                 contentPadding: EdgeInsets.all(10.0),
-                icon: Icon(Icons.lock),
-                labelText: '请输入密码',
+                icon: Icon(Icons.account_box_outlined),
+                labelText: '请输入你想要注册的账号（最多11位）',
               ),
-              obscureText: true),
-          TextField(
-            controller: nickNameController,
-            keyboardType: TextInputType.name,
-            decoration: InputDecoration(
+              autofocus: false,
+            ),
+            margin: const EdgeInsets.only(left: 30,top:20,right:30),
+          ),
+          Container(
+            child: TextField(
+                controller: passwordController,
+                keyboardType: TextInputType.name,
+                decoration: InputDecoration(
+                  contentPadding: EdgeInsets.all(10.0),
+                  icon: Icon(Icons.lock),
+                  labelText: '请输入密码',
+                ),
+                obscureText: true),
+            margin: const EdgeInsets.only(left: 30,right:30),
+          ),
+          Container(
+            child: TextField(
+              controller: nickNameController,
+              keyboardType: TextInputType.name,
+              decoration: InputDecoration(
+                  contentPadding: EdgeInsets.all(10.0),
+                  icon: Icon(Icons.account_box),
+                  labelText: '请输入你的昵称',
+                  hintText: '可以不填'),
+            ),
+            margin: const EdgeInsets.only(left: 30,right:30),
+          ),
+          Container(
+            child: TextField(
+              controller: IDNumberController,
+              keyboardType: TextInputType.number,
+              decoration: InputDecoration(
                 contentPadding: EdgeInsets.all(10.0),
-                icon: Icon(Icons.account_box),
-                labelText: '请输入你的昵称',
-                hintText: '可以不填'),
-          ),
-          TextField(
-            controller: IDNumberController,
-            keyboardType: TextInputType.number,
-            decoration: InputDecoration(
-              contentPadding: EdgeInsets.all(10.0),
-              icon: Icon(Icons.perm_identity),
-              labelText: '请输入你的身份证号',
+                icon: Icon(Icons.perm_identity),
+                labelText: '请输入你的身份证号',
+              ),
             ),
+            margin: const EdgeInsets.only(left: 30,right:30),
           ),
-          TextField(
-            controller: nameController,
-            keyboardType: TextInputType.name,
-            decoration: InputDecoration(
+          Container(
+            child: TextField(
+              controller: nameController,
+              keyboardType: TextInputType.name,
+              decoration: InputDecoration(
+                  contentPadding: EdgeInsets.all(10.0),
+                  icon: Icon(Icons.account_circle),
+                  labelText: '请输入你的姓名',
+                  hintText: '可以不填'),
+            ),
+            margin: const EdgeInsets.only(left: 30,right:30),
+          ),
+          Container(
+            child: TextField(
+              controller: phoneNumberController,
+              keyboardType: TextInputType.number,
+              decoration: InputDecoration(
                 contentPadding: EdgeInsets.all(10.0),
-                icon: Icon(Icons.account_circle),
-                labelText: '请输入你的姓名',
-                hintText: '可以不填'),
-          ),
-          TextField(
-            controller: phoneNumberController,
-            keyboardType: TextInputType.number,
-            decoration: InputDecoration(
-              contentPadding: EdgeInsets.all(10.0),
-              icon: Icon(Icons.phone),
-              labelText: '请输入你的手机号',
-              hintText: '可以不填',
+                icon: Icon(Icons.phone),
+                labelText: '请输入你的手机号',
+                hintText: '可以不填',
+              ),
             ),
+            margin: const EdgeInsets.only(left: 30,right:30),
           ),
-          TextField(
-            controller: emailController,
-            keyboardType: TextInputType.emailAddress,
-            decoration: InputDecoration(
-              contentPadding: EdgeInsets.all(10.0),
-              icon: Icon(Icons.email),
-              labelText: '请输入你的电子邮箱',
-              hintText: '可以不填',
+          Container(
+            child: TextField(
+              controller: emailController,
+              keyboardType: TextInputType.emailAddress,
+              decoration: InputDecoration(
+                contentPadding: EdgeInsets.all(10.0),
+                icon: Icon(Icons.email),
+                labelText: '请输入你的电子邮箱',
+                hintText: '可以不填',
+              ),
             ),
+            margin: const EdgeInsets.only(left: 30,right:30),
           ),
-          RaisedButton(
-            onPressed: _register,
-            child: Text('确认'),
+          Container(
+            child: RaisedButton(
+              onPressed: _register,
+              child: Text('确认'),
+            ),
+            margin: const EdgeInsets.only(left: 120,top:30,right:120),
           ),
         ],
       ),
@@ -264,19 +288,7 @@ class RegisterPageState extends State<RegisterPage> {
           builder: (context) => AlertDialog(
                 title: Text('账号格式不对'),
               ));
-    } else if (passwordController.text.length == 0) {
-      showDialog(
-          context: context,
-          builder: (context) => AlertDialog(
-                title: Text('请填写密码'),
-              ));
-    } else if (IDNumberController.text.length != 18) {
-      showDialog(
-          context: context,
-          builder: (context) => AlertDialog(
-                title: Text('身份证号格式不对'),
-              ));
-    } else {
+    } else if(accountNumberController.text.length>0){
       bool isExist = await UserService.isUserExist(
           searchedIDNumber: IDNumberController.text);
       if (isExist == false) {
@@ -292,17 +304,29 @@ class RegisterPageState extends State<RegisterPage> {
         showDialog(
             context: context,
             builder: (context) => AlertDialog(
-                  title: Text('注册成功'),
-                ));
+              title: Text('注册成功'),
+            ));
         onTextClear();
       } else {
         showDialog(
             context: context,
             builder: (context) => AlertDialog(
-                  title: Text("该身份证已被注册"),
-                ));
+              title: Text("该身份证已被注册"),
+            ));
         onTextClear();
       }
+    }else if (passwordController.text.length == 0) {
+      showDialog(
+          context: context,
+          builder: (context) => AlertDialog(
+                title: Text('请填写密码'),
+              ));
+    } else if (IDNumberController.text.length != 18) {
+      showDialog(
+          context: context,
+          builder: (context) => AlertDialog(
+                title: Text('身份证号格式不对'),
+              ));
     }
   }
 
@@ -336,28 +360,37 @@ class LoginPageState extends State<LoginPage> {
       ),
       body: Column(
         children: <Widget>[
-          TextField(
-            controller: accountNumberController,
-            keyboardType: TextInputType.number,
-            decoration: InputDecoration(
-              contentPadding: EdgeInsets.all(10.0),
-              icon: Icon(Icons.account_box_outlined),
-              labelText: '请输入你的账号（最多11位）',
-            ),
-            autofocus: false,
-          ),
-          TextField(
-              controller: passwordController,
-              keyboardType: TextInputType.name,
+          Container(
+            child: TextField(
+              controller: accountNumberController,
+              keyboardType: TextInputType.number,
               decoration: InputDecoration(
                 contentPadding: EdgeInsets.all(10.0),
-                icon: Icon(Icons.lock),
-                labelText: '请输入密码',
+                icon: Icon(Icons.account_box_outlined),
+                labelText: '请输入你的账号（最多11位）',
               ),
-              obscureText: true),
-          RaisedButton(
-            onPressed: _login,
-            child: Text('登录'),
+              autofocus: false,
+            ),
+            margin: const EdgeInsets.only(left: 30,top:20,right:30),
+          ),
+          Container(
+            child: TextField(
+                controller: passwordController,
+                keyboardType: TextInputType.name,
+                decoration: InputDecoration(
+                  contentPadding: EdgeInsets.all(10.0),
+                  icon: Icon(Icons.lock),
+                  labelText: '请输入密码',
+                ),
+                obscureText: true),
+            margin: const EdgeInsets.only(left: 30,right:30),
+          ),
+          Container(
+            child: RaisedButton(
+              onPressed: _login,
+              child: Text('登录'),
+            ),
+            margin: const EdgeInsets.only(left: 120,top:30,right:120),
           ),
         ],
       ),
