@@ -16,15 +16,21 @@ import 'package:museumguide/service/video_service.dart';
 import 'package:museumguide/models/index.dart';
 
 void main() async {
-  if (Platform.isIOS) {
-    BMFMapSDK.setApiKeyAndCoordType(
-        '请输入百度开放平台申请的iOS端API KEY', BMF_COORD_TYPE.BD09LL);
-  } else if (Platform.isAndroid) {
-// Android 目前不支持接口设置Apikey,
-// 请在主工程的Manifest文件里设置，详细配置方法请参考[https://lbsyun.baidu.com/ 官网][https://lbsyun.baidu.com/)demo
-    BMFMapSDK.setCoordType(BMF_COORD_TYPE.BD09LL);
+  List<Video> list = await VideoService.getVideoList();
+  for (Video obj in list) {
+    print(obj.videoName);
+    print(obj.address);
+    print(obj.state);
   }
-  runApp(MyApp());
+//   if (Platform.isIOS) {
+//     BMFMapSDK.setApiKeyAndCoordType(
+//         '请输入百度开放平台申请的iOS端API KEY', BMF_COORD_TYPE.BD09LL);
+//   } else if (Platform.isAndroid) {
+// // Android 目前不支持接口设置Apikey,
+// // 请在主工程的Manifest文件里设置，详细配置方法请参考[https://lbsyun.baidu.com/ 官网][https://lbsyun.baidu.com/)demo
+//     BMFMapSDK.setCoordType(BMF_COORD_TYPE.BD09LL);
+//   }
+//   runApp(MyApp());
 }
 
 class MyApp extends StatelessWidget {

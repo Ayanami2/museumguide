@@ -25,7 +25,6 @@ class VideoService {
   static void insertVideo({
     Video insertedVideo,
   }) async {
-    print(insertedVideo.state == null);
     final response = await http.post(
       ServerUrl.VIDEO_URL,
       body: {
@@ -39,5 +38,20 @@ class VideoService {
       },
     );
     print(response.body);
+  }
+
+  static Future<List<Video>> getVideoList() async {
+    final response = await http.post(
+      ServerUrl.VIDEO_URL,
+      body: {
+        "action": "getVideoList",
+      },
+    );
+    var list = jsonDecode(response.body);
+    List<Video> res = [];
+    for (var obj in list) {
+      res.add(Video.fromJson(obj));
+    }
+    return res;
   }
 }
