@@ -278,7 +278,7 @@ class RegisterPageState extends State<RegisterPage> {
               ));
     } else {
       bool isExist = await UserService.isUserExist(
-          searchedIDNumber: IDNumberController.text);
+          searchedAccountNumber: accountNumberController.text);
       if (isExist == false) {
         UserService.insertUser(
             insertedUser: User()

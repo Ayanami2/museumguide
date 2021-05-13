@@ -36,24 +36,19 @@ class _MapPageState extends BMFBaseMapState<MapPage> {
     super.onBMFMapCreated(controller);
 
     /// 地图加载回调
-    if (_showUserLocation) {
-      myMapController?.showUserLocation(true);
-      updateUserLocation();
-      myMapController?.setUserTrackingMode(_userTrackingMode);
-      // updatUserLocationDisplayParam();
-    }
+    // if (_showUserLocation) {
+    //   myMapController?.showUserLocation(true);
+    //   updateUserLocation();
+    //   myMapController?.setUserTrackingMode(_userTrackingMode);
+    //   // updateUserLocationDisplayParam();
+    // }
     BMFCoordinate bmfCoordinate = BMFCoordinate(40.258911, 116.15437);
     addStartMarker(bmfCoordinate);
     bmfCoordinate = BMFCoordinate(39.924091, 116.4034147);
     // addMuseum(bmfCoordinate);
     addMuseums();
-
+    lineToNearestMuseum();
     myMapController?.setMapClickedMarkerCallback(callback: (BMFMarker marker) {
-      print(marker.position.latitude);
-      print(marker.position.longitude);
-      print(marker.Id);
-      print(marker.identifier);
-      print(marker.title);
       showDialog(
         context: context,
         builder: (ctx) {
@@ -82,6 +77,7 @@ class _MapPageState extends BMFBaseMapState<MapPage> {
                 mapOptions: BMFMapOptions(
                   center: BMFCoordinate(
                       snapshot.data["latitude"], snapshot.data["longitude"]),
+                  // center: BMFCoordinate(40.258982, 116.153749),
                   zoomLevel: 18,
                   maxZoomLevel: 18,
                   minZoomLevel: 4,
@@ -254,6 +250,46 @@ class _MapPageState extends BMFBaseMapState<MapPage> {
       maker2museum.addAll({marker.Id: obj.museumID.toString()});
       myMapController?.addMarker(marker);
     }
+  }
+
+  void lineToNearestMuseum() async {
+    List<MuseumBasicInformation> l =
+        await MuseumBasicInformationService.getMuseumList();
+    Map<String, Object> map = (baiduGps()) as Map<String, Object>;
+    print("纬度");
+    print(map['latitude']);
+    print("经度");
+    print(map['longitude']);
+    double distance = double.infinity;
+    double latitude = 0;
+    double longitude = 0;
+    for (MuseumBasicInformation obj in l) {
+      if ((double.parse(obj.latitude) - map['latitude']).abs() +
+              (double.parse(obj.longitude) - map['longitude']).abs() <
+          distance) {
+        distance = (double.parse(obj.latitude) - map['latitude']).abs() +
+            (double.parse(obj.longitude) - map['longitude']).abs();
+        latitude = double.parse(obj.latitude);
+        longitude = double.parse(obj.longitude);
+      }
+    }
+    List<BMFCoordinate> coordinates = List(2);
+    coordinates[0] = BMFCoordinate(map['latitude'], map['longitude']);
+    coordinates[1] = BMFCoordinate(latitude, longitude);
+    List<Color> colors = List(1);
+    colors[0] = Colors.blue;
+    List<int> index = [0];
+    BMFPolyline colorsPolyline = BMFPolyline(
+        indexs: index,
+        coordinates: coordinates,
+        colors: colors,
+        width: 16,
+        lineDashType: BMFLineDashType.LineDashTypeNone,
+        lineCapType: BMFLineCapType.LineCapButt,
+        lineJoinType: BMFLineJoinType.LineJoinRound);
+
+    /// 添加polyline
+    // myMapController?.addPolyline(colorsPolyline);
   }
 }
 

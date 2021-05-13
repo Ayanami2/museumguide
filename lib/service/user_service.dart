@@ -5,13 +5,13 @@ import 'dart:convert';
 
 class UserService {
   static Future<bool> isUserExist({
-    String searchedIDNumber,
+    String searchedAccountNumber,
   }) async {
     final response = await http.post(
       ServerUrl.USER_URL,
       body: {
         "action": "isUserExist",
-        "IDNumber": searchedIDNumber,
+        "accountNumber": searchedAccountNumber,
       },
     );
     print(response.body);
