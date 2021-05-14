@@ -25,7 +25,6 @@ class VideoService {
   static void insertVideo({
     Video insertedVideo,
   }) async {
-    print(insertedVideo.state == null);
     final response = await http.post(
       ServerUrl.VIDEO_URL,
       body: {
