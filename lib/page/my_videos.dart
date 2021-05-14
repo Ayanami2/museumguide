@@ -7,6 +7,8 @@ import 'package:chewie/chewie.dart';
 import 'package:chewie/src/chewie_player.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:museumguide/common/global.dart';
+import 'package:museumguide/service/video_service.dart';
+import 'package:museumguide/models/video.dart';
 
 final _firestore = Firestore.instance;
 
@@ -45,8 +47,8 @@ class MessagesStream extends StatelessWidget {
     if (Global.user.nickName != null && Global.user.nickName != '') {
       username = Global.user.nickName;
     }
-    return StreamBuilder<QuerySnapshot>(
-      stream: _firestore.collection(Global.user.IDNumber).snapshots(),
+    return StreamBuilder<List<Video>>(
+      stream: getVideoList(accountNumber: Global.user.accountNumber),
       builder: (context, snapshot) {
         if (!snapshot.hasData) {
           return Center(
@@ -55,19 +57,21 @@ class MessagesStream extends StatelessWidget {
             ),
           );
         }
-        final messages = snapshot.data.documents.reversed;
+        final messages = snapshot.data;
         List<VideoList> messageBubbles = [];
         for (var message in messages) {
-          final title = message.data['title'];
-          final introduction = message.data['introduction'];
-          final url = message.data['url'];
-          final submitTime = message.data['time'];
+          final title = message.videoName;
+          final introduction = message.intro;
+          final url = message.address;
+          final state = message.state;
+          final acNumber = message.accountNumber;
+          final nickname = message.nickName;
 
           final messageBubble = VideoList(
             title: title,
             introduction: introduction,
             url: url,
-            time: submitTime,
+            state: state,
           );
 
           messageBubbles.add(messageBubble);
@@ -95,33 +99,35 @@ class MessagesStream extends StatelessWidget {
 }*/
 
 class VideoList extends StatefulWidget {
-  VideoList({this.title, this.introduction, this.url, this.time});
+  VideoList({this.title, this.introduction, this.url, this.state});
 
   final String title;
   final String introduction;
   final String url;
-  String time;
+  final num state;
+  //String time;
 
   @override
-  _VideoListState createState() =>
-      _VideoListState(
-          title: title, time: time, url: url, introduction: introduction);
+  _VideoListState createState() => _VideoListState(
+      title: title, url: url, introduction: introduction, state: state);
 }
 
 class _VideoListState extends State<VideoList> {
-  _VideoListState({this.title, this.introduction, this.url, this.time});
+  _VideoListState({this.title, this.introduction, this.url, this.state});
 
   final String title;
   final String introduction;
   final String url;
-  String time;
+  final num state;
+  final List<String> states = ['未审核', '通过', '未通过'];
+  //String time;
   VideoPlayerController _videoPlayerController1;
   ChewieController _chewieController;
 
   void initState() {
     super.initState();
     // 生成控制器(两个)
-    _videoPlayerController1 = VideoPlayerController.network('$url.mp4');
+    _videoPlayerController1 = VideoPlayerController.network(url);
     _videoPlayerController1.initialize();
     _chewieController = ChewieController(
         videoPlayerController: _videoPlayerController1,
@@ -137,10 +143,21 @@ class _VideoListState extends State<VideoList> {
     _chewieController.dispose();
   }
 
+  Color setColor({num videoState}) {
+    var textColor;
+    if (videoState == -1) {
+      textColor = Colors.grey;
+    } else if (videoState == 0) {
+      textColor = Colors.green;
+    } else if (videoState == 1) {
+      textColor = Colors.red;
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
-    print('time--------' + time);
-    time = time.substring(0, time.length - 7);
+    //print('time--------' + time);
+    //time = time.substring(0, time.length - 7);
     String username = '唐伯虎'; //昵称
     if (Global.user.nickName != null && Global.user.nickName != '') {
       username = Global.user.nickName;
@@ -163,11 +180,25 @@ class _VideoListState extends State<VideoList> {
             ),
           ),
           Text(
-            '发布人：${username + "  发布时间：" + time}',
+            '发布人：$username',
             style: TextStyle(fontSize: 10),
           ),
+          Text(
+            '状态：${states[state + 1]}',
+            style: TextStyle(fontSize: 13, color: setColor(videoState: state)),
+          ),
+          // Text(
+          //   '发布人：${username + "  发布时间：" + time}',
+          //   style: TextStyle(fontSize: 10),
+          // ),
         ],
       ),
     );
   }
+}
+
+Stream<List<Video>> getVideoList({num accountNumber}) async* {
+  var userVideoList = await VideoService.getVideoListByAccountNumber(
+      accountNumber: accountNumber);
+  yield userVideoList;
 }

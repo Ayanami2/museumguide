@@ -1,33 +1,33 @@
 {
   "project_info": {
-    "project_number": "118117986715",
-    "project_id": "videocollocation",
-    "storage_bucket": "videocollocation.appspot.com"
+    "project_number": "640603600071",
+    "project_id": "videos-27eaf",
+    "storage_bucket": "videos-27eaf.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:118117986715:android:4e2b3df45528fb48ba713e",
+        "mobilesdk_app_id": "1:640603600071:android:f851cadb34469f19bbbae2",
         "android_client_info": {
           "package_name": "com.videos.museumguide"
         }
       },
       "oauth_client": [
         {
-          "client_id": "118117986715-v3vpdu5jiseitqt3a923efgeu3ades5u.apps.googleusercontent.com",
+          "client_id": "640603600071-8aj03vpl71h3l7uiace9qp2c0i1r9urn.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyATT2qzqDhBLhuuc46lI6iWZaT6qoEJtjQ"
+          "current_key": "AIzaSyCuFF5WGEgUExoRGMR5wQVUZfJ0hqACKlw"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "118117986715-v3vpdu5jiseitqt3a923efgeu3ades5u.apps.googleusercontent.com",
+              "client_id": "640603600071-8aj03vpl71h3l7uiace9qp2c0i1r9urn.apps.googleusercontent.com",
               "client_type": 3
             }
           ]

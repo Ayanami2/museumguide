@@ -11,6 +11,8 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:chewie/chewie.dart';
 import 'package:chewie/src/chewie_player.dart';
 import 'package:museumguide/common/global.dart';
+import 'package:museumguide/service/video_service.dart';
+import 'package:museumguide/models/video.dart';
 
 final _firestore = Firestore.instance;
 
@@ -99,12 +101,14 @@ class _VideoSelectPageState extends State<VideoSelectPage> {
     k3 = true;
     print('k3:' + k3.toString());
 
-    _firestore.collection('${Global.user.IDNumber}').add({
-      'title': title,
-      'introduction': introuction,
-      'url': getURL,
-      'time': DateTime.now().toString(),
-    });
+    VideoService.insertVideo(
+        insertedVideo: Video()
+        ..nickName = username
+        ..accountNumber = Global.user.accountNumber
+        ..state = -1
+        ..address = getURL+'.mp4'
+        ..intro = introuction
+        ..videoName = title);
   }
 
   Widget BOX() {
