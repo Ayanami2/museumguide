@@ -129,7 +129,7 @@ class _VideoSelectPageState extends State<VideoSelectPage> {
           controller: ChewieController(
             videoPlayerController: _videoPlayerController,
             autoPlay: false,
-            looping: true,
+            looping: false,
           ),
         ),
       );

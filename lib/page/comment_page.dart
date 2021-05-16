@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:chewie/chewie.dart';
@@ -140,8 +141,8 @@ class _VideoListState extends State<VideoList> {
     _chewieController = ChewieController(
         videoPlayerController: _videoPlayerController1,
         autoPlay: false,
-        looping: true,
-        aspectRatio: 16 / 9);
+        looping: false,
+        aspectRatio: 16/9);
   }
 
   @override
@@ -187,6 +188,8 @@ class _VideoListState extends State<VideoList> {
 }
 
 Stream<List<Video>> getVideoList() async* {
-  var userVideoList = await VideoService.getVideoList();
-  yield userVideoList;
+  while(true) {
+    var userVideoList = await VideoService.getVideoList();
+    yield userVideoList;
+  }
 }

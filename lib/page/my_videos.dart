@@ -132,7 +132,7 @@ class _VideoListState extends State<VideoList> {
     _chewieController = ChewieController(
         videoPlayerController: _videoPlayerController1,
         autoPlay: false,
-        looping: true,
+        looping: false,
         aspectRatio: 16 / 9);
   }
 
@@ -198,7 +198,9 @@ class _VideoListState extends State<VideoList> {
 }
 
 Stream<List<Video>> getVideoList({num accountNumber}) async* {
-  var userVideoList = await VideoService.getVideoListByAccountNumber(
-      accountNumber: accountNumber);
-  yield userVideoList;
+  while(true) {
+    var userVideoList = await VideoService.getVideoListByAccountNumber(
+        accountNumber: accountNumber);
+    yield userVideoList;
+  }
 }
