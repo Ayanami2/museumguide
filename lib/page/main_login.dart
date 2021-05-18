@@ -161,6 +161,7 @@ class RegisterPageState extends State<RegisterPage> {
   TextEditingController nameController = TextEditingController();
   TextEditingController accountNumberController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
+  TextEditingController twicepasswordController = TextEditingController();
   TextEditingController phoneNumberController = TextEditingController();
   TextEditingController emailController = TextEditingController();
 
@@ -193,6 +194,18 @@ class RegisterPageState extends State<RegisterPage> {
                   contentPadding: EdgeInsets.all(10.0),
                   icon: Icon(Icons.lock),
                   labelText: '请输入密码',
+                ),
+                obscureText: true),
+            margin: const EdgeInsets.only(left: 30,right:30),
+          ),
+          Container(
+            child: TextField(
+                controller: twicepasswordController,
+                keyboardType: TextInputType.name,
+                decoration: InputDecoration(
+                  contentPadding: EdgeInsets.all(10.0),
+                  icon: Icon(Icons.lock),
+                  labelText: '请再次输入密码',
                 ),
                 obscureText: true),
             margin: const EdgeInsets.only(left: 30,right:30),
@@ -278,6 +291,7 @@ class RegisterPageState extends State<RegisterPage> {
       'name': nameController.text,
       'accountNumber': accountNumberController.text,
       'password': passwordController.text,
+      'twicepassword': twicepasswordController.text,
       'phoneNumber': phoneNumberController.text,
       'email': emailController.text
     });
@@ -293,11 +307,25 @@ class RegisterPageState extends State<RegisterPage> {
           searchedAccountNumber: accountNumberController.text);
       if (isExist == false) {
         if (passwordController.text.length == 0) {
-        showDialog(
-            context: context,
-            builder: (context) => AlertDialog(
-              title: Text('请填写密码'),
-            ));
+          showDialog(
+              context: context,
+              builder: (context) => AlertDialog(
+                title: Text('请填写密码'),
+              ));
+        }else if (twicepasswordController.text.length==0) {
+          showDialog(
+              context: context,
+              builder: (context) => AlertDialog(
+                title: Text('请再次输入密码'),
+              ));
+        } else if (twicepasswordController.text!=passwordController.text) {
+          showDialog(
+              context: context,
+              builder: (context) => AlertDialog(
+                title: Text('两次输入的密码不相同'),
+              ));
+          passwordController.clear();
+          twicepasswordController.clear();
         } else if (IDNumberController.text.length != 18) {
         showDialog(
             context: context,
@@ -339,6 +367,7 @@ class RegisterPageState extends State<RegisterPage> {
     setState(() {
       accountNumberController.clear();
       passwordController.clear();
+      twicepasswordController.clear();
       nameController.clear();
       nickNameController.clear();
       IDNumberController.clear();
