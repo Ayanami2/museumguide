@@ -184,7 +184,7 @@ class RegisterPageState extends State<RegisterPage> {
               ),
               autofocus: false,
             ),
-            margin: const EdgeInsets.only(left: 30,top:20,right:30),
+            margin: const EdgeInsets.only(left: 30, top: 20, right: 30),
           ),
           Container(
             child: TextField(
@@ -196,7 +196,7 @@ class RegisterPageState extends State<RegisterPage> {
                   labelText: '请输入密码',
                 ),
                 obscureText: true),
-            margin: const EdgeInsets.only(left: 30,right:30),
+            margin: const EdgeInsets.only(left: 30, right: 30),
           ),
           Container(
             child: TextField(
@@ -208,7 +208,7 @@ class RegisterPageState extends State<RegisterPage> {
                   labelText: '请再次输入密码',
                 ),
                 obscureText: true),
-            margin: const EdgeInsets.only(left: 30,right:30),
+            margin: const EdgeInsets.only(left: 30, right: 30),
           ),
           Container(
             child: TextField(
@@ -220,7 +220,7 @@ class RegisterPageState extends State<RegisterPage> {
                   labelText: '请输入你的昵称',
                   hintText: '可以不填'),
             ),
-            margin: const EdgeInsets.only(left: 30,right:30),
+            margin: const EdgeInsets.only(left: 30, right: 30),
           ),
           Container(
             child: TextField(
@@ -232,7 +232,7 @@ class RegisterPageState extends State<RegisterPage> {
                 labelText: '请输入你的身份证号',
               ),
             ),
-            margin: const EdgeInsets.only(left: 30,right:30),
+            margin: const EdgeInsets.only(left: 30, right: 30),
           ),
           Container(
             child: TextField(
@@ -244,7 +244,7 @@ class RegisterPageState extends State<RegisterPage> {
                   labelText: '请输入你的姓名',
                   hintText: '可以不填'),
             ),
-            margin: const EdgeInsets.only(left: 30,right:30),
+            margin: const EdgeInsets.only(left: 30, right: 30),
           ),
           Container(
             child: TextField(
@@ -257,7 +257,7 @@ class RegisterPageState extends State<RegisterPage> {
                 hintText: '可以不填',
               ),
             ),
-            margin: const EdgeInsets.only(left: 30,right:30),
+            margin: const EdgeInsets.only(left: 30, right: 30),
           ),
           Container(
             child: TextField(
@@ -270,14 +270,14 @@ class RegisterPageState extends State<RegisterPage> {
                 hintText: '可以不填',
               ),
             ),
-            margin: const EdgeInsets.only(left: 30,right:30),
+            margin: const EdgeInsets.only(left: 30, right: 30),
           ),
           Container(
             child: RaisedButton(
               onPressed: _register,
               child: Text('确认'),
             ),
-            margin: const EdgeInsets.only(left: 120,top:30,right:120),
+            margin: const EdgeInsets.only(left: 120, top: 30, right: 120),
           ),
         ],
       ),
@@ -302,7 +302,7 @@ class RegisterPageState extends State<RegisterPage> {
           builder: (context) => AlertDialog(
                 title: Text('账号格式不对'),
               ));
-    } else if(accountNumberController.text.length>0) {
+    } else if (accountNumberController.text.length > 0) {
       bool isExist = await UserService.isUserExist(
           searchedAccountNumber: accountNumberController.text);
       if (isExist == false) {
@@ -310,31 +310,30 @@ class RegisterPageState extends State<RegisterPage> {
           showDialog(
               context: context,
               builder: (context) => AlertDialog(
-                title: Text('请填写密码'),
-              ));
-        }else if (twicepasswordController.text.length==0) {
+                    title: Text('请填写密码'),
+                  ));
+        } else if (twicepasswordController.text.length == 0) {
           showDialog(
               context: context,
               builder: (context) => AlertDialog(
-                title: Text('请再次输入密码'),
-              ));
-        } else if (twicepasswordController.text!=passwordController.text) {
+                    title: Text('请再次输入密码'),
+                  ));
+        } else if (twicepasswordController.text != passwordController.text) {
           showDialog(
               context: context,
               builder: (context) => AlertDialog(
-                title: Text('两次输入的密码不相同'),
-              ));
+                    title: Text('两次输入的密码不相同'),
+                  ));
           passwordController.clear();
           twicepasswordController.clear();
         } else if (IDNumberController.text.length != 18) {
-        showDialog(
-            context: context,
-            builder: (context) => AlertDialog(
-              title: Text('身份证号格式不对'),
-            ));
-        IDNumberController.clear();
-        }
-        else {
+          showDialog(
+              context: context,
+              builder: (context) => AlertDialog(
+                    title: Text('身份证号格式不对'),
+                  ));
+          IDNumberController.clear();
+        } else {
           UserService.insertUser(
               insertedUser: User()
                 ..accountNumber = int.parse(accountNumberController.text)
@@ -346,8 +345,7 @@ class RegisterPageState extends State<RegisterPage> {
                 ..email = emailController.text);
           showDialog(
               context: context,
-              builder: (context) =>
-                  AlertDialog(
+              builder: (context) => AlertDialog(
                     title: Text('注册成功'),
                   ));
           onTextClear();
@@ -356,8 +354,8 @@ class RegisterPageState extends State<RegisterPage> {
         showDialog(
             context: context,
             builder: (context) => AlertDialog(
-              title: Text("该账号已被注册"),
-            ));
+                  title: Text("该账号已被注册"),
+                ));
         accountNumberController.clear();
       }
     }
@@ -405,7 +403,7 @@ class LoginPageState extends State<LoginPage> {
               ),
               autofocus: false,
             ),
-            margin: const EdgeInsets.only(left: 30,top:20,right:30),
+            margin: const EdgeInsets.only(left: 30, top: 20, right: 30),
           ),
           Container(
             child: TextField(
@@ -417,14 +415,14 @@ class LoginPageState extends State<LoginPage> {
                   labelText: '请输入密码',
                 ),
                 obscureText: true),
-            margin: const EdgeInsets.only(left: 30,right:30),
+            margin: const EdgeInsets.only(left: 30, right: 30),
           ),
           Container(
             child: RaisedButton(
               onPressed: _login,
               child: Text('登录'),
             ),
-            margin: const EdgeInsets.only(left: 120,top:30,right:120),
+            margin: const EdgeInsets.only(left: 120, top: 30, right: 120),
           ),
         ],
       ),
@@ -443,26 +441,42 @@ class LoginPageState extends State<LoginPage> {
           builder: (context) => AlertDialog(
                 title: Text('账号格式不对'),
               ));
-    } else if (passwordController.text.length == 0) {
-      showDialog(
-          context: context,
-          builder: (context) => AlertDialog(
-                title: Text('请填写密码'),
-              ));
     } else {
-      User user = await UserService.getUserByAccountNumber(
-          accountNumber: int.parse(accountNumberController.text));
-      if (user != null && user.password == passwordController.text) {
-        Global.user = user;
-        Navigator.pushNamed(context, 'home_page');
-      } else {
+      bool isExist = await UserService.isUserExist(
+          searchedAccountNumber: accountNumberController.text);
+      if (isExist == false) {
         showDialog(
             context: context,
-            builder: (context) => AlertDialog(
-                  title: Text('密码错误'),
+            builder: (context) =>
+                AlertDialog(
+                  title: Text("账号不存在"),
                 ));
         onTextClear();
+      } else {
+        if (passwordController.text.length == 0) {
+        showDialog(
+            context: context,
+            builder: (context) =>
+                AlertDialog(
+                  title: Text('请填写密码'),
+                ));
+      } else {
+        User user = await UserService.getUserByAccountNumber(
+            accountNumber: int.parse(accountNumberController.text));
+        if (user != null && user.password == passwordController.text) {
+          Global.user = user;
+          Navigator.pushNamed(context, 'home_page');
+        } else {
+          showDialog(
+              context: context,
+              builder: (context) =>
+                  AlertDialog(
+                    title: Text('密码错误'),
+                  ));
+          onTextClear();
+        }
       }
+    }
     }
   }
 
